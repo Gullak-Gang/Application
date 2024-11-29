@@ -1,5 +1,5 @@
 import { STATE, authClient } from "@/services/twitter";
-import { setTokenCookies } from "@/services/twitter/cookies";
+import { setTokenKVStore } from "@/services/twitter/kv_store";
 import { type NextRequest, NextResponse } from "next/server";
 
 export const fetchCache = "force-no-store";
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Failed to get access token" }, { status: 500 });
     }
 
-    setTokenCookies(token);
+    await setTokenKVStore(token);
     return NextResponse.redirect(new URL("/dashboard", process.env.NEXT_PUBLIC_BASE_URL ?? request?.nextUrl));
   } catch (error) {
     console.error("Twitter callback error:", error);
