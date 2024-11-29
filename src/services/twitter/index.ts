@@ -1,5 +1,5 @@
 import { auth } from "twitter-api-sdk";
-import { clearTokenCookies, getTokensFromCookies, setTokenCookies } from "./cookies";
+import { clearTokenKVStore, getTokensFromKVStore, setTokenKVStore } from "./kv_store";
 
 export const STATE = String(process.env.CLIENT_STATE);
 export const CLIENT_ID = String(process.env.CLIENT_ID);
@@ -12,7 +12,7 @@ export const authClient = new auth.OAuth2User({
 });
 
 export const getValidToken = async () => {
-  const tokens = getTokensFromCookies();
+  const tokens = await getTokensFromKVStore();
 
   if (!tokens) {
     throw new Error("No tokens found");
@@ -25,10 +25,10 @@ export const getValidToken = async () => {
 
     try {
       const newTokens = await refreshTwitterToken(tokens.refresh_token);
-      setTokenCookies(newTokens);
+      await setTokenKVStore(newTokens);
       return newTokens;
     } catch (error) {
-      clearTokenCookies();
+      await clearTokenKVStore();
       throw new Error("Token refresh failed", {
         cause: error,
       });

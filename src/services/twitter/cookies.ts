@@ -1,12 +1,5 @@
 import { cookies } from "next/headers";
-
-export interface Token {
-  access_token?: string;
-  refresh_token?: string;
-  token_type?: string;
-  scope?: string;
-  expires_at?: number;
-}
+import type { Token } from "./types";
 
 export const getTokensFromCookies = (): Token | null => {
   const cookieStore = cookies();
