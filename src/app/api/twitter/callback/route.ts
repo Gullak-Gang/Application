@@ -1,5 +1,9 @@
 import { STATE, authClient } from "@/services/twitter";
+import { setTokenCookies } from "@/services/twitter/cookies";
 import { type NextRequest, NextResponse } from "next/server";
+
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
 
 export async function GET(request: NextRequest) {
   try {
@@ -11,30 +15,14 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 
-    console.log({ state, code });
-
     const { token } = await authClient.requestAccessToken(code);
 
-    console.log(token);
-    // const cookieStore = cookies();
+    if (!token?.access_token) {
+      return NextResponse.json({ error: "Failed to get access token" }, { status: 500 });
+    }
 
-    // cookieStore.set("twitter_access_token", token.access_token ?? "", {
-    //   httpOnly: true,
-    //   secure: process.env.NODE_ENV === "production",
-    //   sameSite: "lax",
-    //   path: "/",
-    // });
-
-    // if (token.refresh_token) {
-    //   cookieStore.set("twitter_refresh_token", token.refresh_token, {
-    //     httpOnly: true,
-    //     secure: process.env.NODE_ENV === "production",
-    //     sameSite: "lax",
-    //     path: "/",
-    //   });
-    // }
-    // Redirect to dashboard
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    setTokenCookies(token);
+    return NextResponse.redirect(new URL("/dashboard", process.env.NEXT_PUBLIC_BASE_URL ?? request?.nextUrl));
   } catch (error) {
     console.error("Twitter callback error:", error);
     return NextResponse.json({ error: "Failed to get access token" }, { status: 500 });

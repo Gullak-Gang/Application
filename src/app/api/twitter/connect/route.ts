@@ -1,6 +1,9 @@
 import { STATE, authClient } from "@/services/twitter";
 import { type NextRequest, NextResponse } from "next/server";
 
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
+
 export function GET(_request: NextRequest) {
   try {
     const authUrl = authClient.generateAuthURL({
