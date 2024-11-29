@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080/api/v1/namespaces/system/kv";
+const BASE_URL = `${process.env.KV_BASE_URL}/api/v1/namespaces/system/kv`;
 
 /**
  * Add a key-value pair to the store.
