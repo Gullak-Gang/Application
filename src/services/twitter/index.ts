@@ -66,9 +66,14 @@ async function refreshTwitterToken(refreshToken: string) {
 }
 
 export const getCurrentUser = async () => {
-  const tokens = await getValidToken();
-  authClient.token = tokens;
-  const client = new Client(authClient);
-  const user = await client.users.findMyUser();
-  return user;
+  try {
+    const tokens = await getValidToken();
+    authClient.token = tokens;
+    const client = new Client(authClient);
+    const user = await client.users.findMyUser();
+    return user?.data;
+  } catch (error) {
+    console.error("Error getting current user:", error);
+    throw error;
+  }
 };
