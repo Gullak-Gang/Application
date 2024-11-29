@@ -2,7 +2,7 @@ import { getValidToken } from "@/services/twitter";
 
 export const fetchCache = "force-no-store";
 export const revalidate = 0;
-export const runtime = "edge";
+// export const runtime = "edge";
 
 export async function GET() {
   const token = await getValidToken();
