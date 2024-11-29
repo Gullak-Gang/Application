@@ -2,7 +2,7 @@ import { JetBrains_Mono, Poppins } from "next/font/google";
 import { cn } from "./utils";
 
 const poppins = Poppins({
-  display: "swap",
+  subsets: ["latin"],
   variable: "--font-sans",
   weight: ["400", "600", "800"],
 });
