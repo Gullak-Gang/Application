@@ -38,9 +38,6 @@ importers:
       twitter-api-sdk:
         specifier: ^1.2.1
         version: 1.2.1
-      twitter-api-v2:
-        specifier: ^1.18.2
-        version: 1.18.2
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.4
@@ -732,9 +729,6 @@ packages:
     resolution: {integrity: sha512-tNQ6DGYucFk94JlnUMsHCkHg5o1wnCdHh71Y2ukygNVssOdD1gNVjOpaojJrdwbEAhoZvcWdGHerCa55F8HKxQ==}
     engines: {node: '>=14'}
 
-  twitter-api-v2@1.18.2:
-    resolution: {integrity: sha512-ggImmoAeVgETYqrWeZy+nWnDpwgTP+IvFEc03Pitt1HcgMX+Yw17rP38Fb5FFTinuyNvS07EPtAfZ184uIyB0A==}
-
   typescript@5.7.2:
     resolution: {integrity: sha512-i5t66RHxDvVN40HfDd1PsEThGNnlMCMT3jMUuoh9/0TaqWevNontacunWyN02LA9/fIbEWlcHZcgTKb9QoaLfg==}
     engines: {node: '>=14.17'}
@@ -1362,8 +1356,6 @@ snapshots:
       node-fetch: 2.7.0
     transitivePeerDependencies:
       - encoding
-
-  twitter-api-v2@1.18.2: {}
 
   typescript@5.7.2: {}
 
