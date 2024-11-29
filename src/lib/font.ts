@@ -5,6 +5,7 @@ const poppins = Poppins({
   display: "swap",
   variable: "--font-sans",
   weight: ["400", "600", "800"],
+  preload: false
 });
 
 const fontMain = JetBrains_Mono({
