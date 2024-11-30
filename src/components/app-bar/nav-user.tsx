@@ -1,16 +1,8 @@
-"use client"
+"use client";
 
-import {
-  BadgeCheck,
-  ChevronsUpDown,
-  LogOut
-} from "lucide-react"
+import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,17 +11,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar"
-import { useUser } from "@clerk/nextjs"
+} from "@/components/ui/dropdown-menu";
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
+import { useUser } from "@clerk/nextjs";
+import { Skeleton } from "../ui/skeleton";
 
 export function NavUser() {
-  const { isMobile } = useSidebar()
+  const { isMobile } = useSidebar();
   const { user } = useUser();
 
   return (
@@ -46,8 +34,17 @@ export function NavUser() {
                 <AvatarFallback className="rounded-lg">{user?.firstName?.charAt(0) ?? ""}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user?.fullName}</span>
-                <span className="truncate text-xs">{user?.emailAddresses[0].emailAddress}</span>
+                {user ? (
+                  <>
+                    <span className="truncate font-semibold">{user?.fullName}</span>
+                    <span className="truncate text-xs">{user?.emailAddresses[0].emailAddress}</span>
+                  </>
+                ) : (
+                  <>
+                    <Skeleton className="h-4 w-2/3 rounded-lg mb-1" />
+                    <Skeleton className="h-3 w-full rounded-lg" />
+                  </>
+                )}
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -86,5 +83,5 @@ export function NavUser() {
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  )
+  );
 }

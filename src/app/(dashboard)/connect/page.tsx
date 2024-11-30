@@ -14,6 +14,6 @@ const ConnectPage = () => {
       {/* )} */}
     </section>
   );
-}
+};
 
 export default ConnectPage;

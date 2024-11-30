@@ -1,21 +1,23 @@
-import { AppSidebar } from "@/components/app-bar"
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs"
+import { AppSidebar } from "@/components/app-bar";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 
 const DashboadLayout = ({
-  children
+  children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) => {
   return (
     <>
       <SignedIn>
         <SidebarProvider>
-          <AppSidebar />
-          <main className="flex">
-            <SidebarTrigger />
-            {children}
-          </main>
+          <AppSidebar variant="inset" collapsible="icon" />
+          <SidebarInset>
+            <main>
+              <SidebarTrigger />
+              {children}
+            </main>
+          </SidebarInset>
         </SidebarProvider>
       </SignedIn>
       <SignedOut>
@@ -25,7 +27,7 @@ const DashboadLayout = ({
         </main>
       </SignedOut>
     </>
-  )
-}
+  );
+};
 
-export default DashboadLayout
+export default DashboadLayout;

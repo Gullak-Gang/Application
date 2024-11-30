@@ -1,8 +1,5 @@
-
 const PromptPage = () => {
-  return (
-    <div>PromptPage</div>
-  )
-}
+  return <div>PromptPage</div>;
+};
 
-export default PromptPage
+export default PromptPage;

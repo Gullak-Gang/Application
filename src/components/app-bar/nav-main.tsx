@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/sidebar";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import type { HTMLAttributes } from "react";
 
 type Item = {
   title: string;
@@ -16,14 +18,21 @@ type Item = {
   icon: LucideIcon;
 };
 
-export function NavGroup({ items, title }: { items: Item[]; title: string }) {
+type Props = HTMLAttributes<HTMLDivElement> & {
+  items: Item[];
+  title?: string;
+};
+
+export function NavGroup({ items, title, ...props }: Props) {
+  const pathName = usePathname();
+
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel>{title}</SidebarGroupLabel>
+    <SidebarGroup {...props}>
+      {title && <SidebarGroupLabel>{title}</SidebarGroupLabel>}
       <SidebarMenu>
         {items.map((item) => (
           <SidebarMenuItem key={item.title}>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton asChild className="my-1 py-4" isActive={pathName === item.url}>
               <Link href={item.url}>
                 <item.icon />
                 <span>{item.title}</span>

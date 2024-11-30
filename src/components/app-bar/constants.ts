@@ -1,4 +1,4 @@
-import { FileInputIcon, LinkIcon, LucideLayoutDashboard } from "lucide-react";
+import { LifeBuoy, LucideLayoutDashboard, PlugZapIcon, SendIcon, TextCursorInputIcon } from "lucide-react";
 
 export const NAV_MAIN = [
   {
@@ -8,30 +8,25 @@ export const NAV_MAIN = [
   },
   {
     title: "Prompts",
-    url: "/prompts",
-    icon: FileInputIcon,
+    url: "/prompt",
+    icon: TextCursorInputIcon,
   },
   {
     title: "Connect",
-    url: "#",
-    icon: LinkIcon,
+    url: "/connect",
+    icon: PlugZapIcon,
   },
 ];
 
 export const NAV_SECONDARY = [
   {
-    title: "Dashboard",
-    url: "/",
-    icon: LucideLayoutDashboard,
-  },
-  {
-    title: "Prompts",
-    url: "/prompts",
-    icon: FileInputIcon,
-  },
-  {
-    title: "Connect",
+    title: "Support",
     url: "#",
-    icon: LinkIcon,
+    icon: LifeBuoy,
+  },
+  {
+    title: "Feedback",
+    url: "/",
+    icon: SendIcon,
   },
 ];
