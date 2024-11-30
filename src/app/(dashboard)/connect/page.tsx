@@ -14,7 +14,7 @@ const ConnectPage = () => {
           <TabsTrigger className="flex-1 rounded-lg" value="instagram">
             Instagram
           </TabsTrigger>
-          <TabsTrigger className="flex-1 rounded-lg" value="file-upload">
+          <TabsTrigger className="flex-1 rounded-lg" value="custom">
             Custom Data
           </TabsTrigger>
         </TabsList>
