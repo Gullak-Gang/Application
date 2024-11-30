@@ -1,17 +1,27 @@
-import { getAuthUrl } from "@/actions/twitter";
-import TwitterConnect from "./components/twitter-button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import CustomConnectBox from "./components/custom-box";
+import InstaConnectBox from "./components/insta-box";
+import TwitterConnectBox from "./components/twitter-box";
 
 const ConnectPage = () => {
   return (
-    <section className="flex flex-col justify-center items-center gap-4 h-screen">
-      <h1>Connect</h1>
-      {/* {token ? ( */}
-      {/* <p>Token: {JSON.stringify(token)}</p> */}
-      {/* ) : ( */}
-      <form action={getAuthUrl}>
-        <TwitterConnect />
-      </form>
-      {/* )} */}
+    <section className="h-screen">
+      <Tabs defaultValue="twitter">
+        <TabsList>
+          <TabsTrigger  value="twitter">Twitter</TabsTrigger>
+          <TabsTrigger value="instagram">Instagram</TabsTrigger>
+          <TabsTrigger value="file-upload">Custom Data</TabsTrigger>
+        </TabsList>
+        <TabsContent value="twitter">
+          <TwitterConnectBox />
+        </TabsContent>
+        <TabsContent value="instagram">
+          <InstaConnectBox />
+        </TabsContent>
+        <TabsContent value="custom">
+          <CustomConnectBox />
+        </TabsContent>
+      </Tabs>
     </section>
   );
 };
