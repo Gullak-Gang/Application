@@ -1,5 +1,5 @@
+import type { Token } from "@/types";
 import { cookies } from "next/headers";
-import type { Token } from "./types";
 
 export const getTokensFromCookies = (): Token | null => {
   const cookieStore = cookies();
