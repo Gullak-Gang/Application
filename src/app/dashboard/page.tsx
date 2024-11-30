@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/services/twitter";
+import { getCurrentUser } from "@/actions/twitter";
 import Image from "next/image";
 
 export const dynamic = "force-dynamic";
