@@ -7,10 +7,16 @@ const ConnectPage = () => {
   return (
     <section className="h-screen">
       <Tabs defaultValue="twitter">
-        <TabsList>
-          <TabsTrigger  value="twitter">Twitter</TabsTrigger>
-          <TabsTrigger value="instagram">Instagram</TabsTrigger>
-          <TabsTrigger value="file-upload">Custom Data</TabsTrigger>
+        <TabsList className="w-full justify-between">
+          <TabsTrigger className="flex-1 rounded-lg" value="twitter">
+            Twitter
+          </TabsTrigger>
+          <TabsTrigger className="flex-1 rounded-lg" value="instagram">
+            Instagram
+          </TabsTrigger>
+          <TabsTrigger className="flex-1 rounded-lg" value="file-upload">
+            Custom Data
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="twitter">
           <TwitterConnectBox />
