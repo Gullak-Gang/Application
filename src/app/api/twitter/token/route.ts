@@ -1,12 +1,11 @@
-import { getValidToken } from "@/services/twitter";
-
+import { getToken } from "@/services/store";
 export const fetchCache = "force-no-store";
 export const revalidate = 0;
 export const runtime = "edge";
 
 export async function GET() {
   try {
-    const token = await getValidToken();
+    const token = await getToken();
 
     return Response.json({
       status: 200,

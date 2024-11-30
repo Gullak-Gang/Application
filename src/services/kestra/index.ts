@@ -1,5 +1,6 @@
-import { addKeyValue, deleteKeyValue, getKeyValue } from "../kestra/kv_store";
-import type { Token } from "./types";
+import { CLIENT_ID } from "@/lib/twitter-sdk";
+import { addKeyValue, deleteKeyValue, getKeyValue } from "@/services/kestra/utils";
+import type { Token } from "@/types";
 
 export const getTokensFromKVStore = async (): Promise<Token | null> => {
   const accessToken = await getKeyValue("twitter_access_token");
@@ -29,6 +30,12 @@ export const setTokenKVStore = async (tokens: Token) => {
   if (tokens.expires_at) {
     await addKeyValue("twitter_token_expires_at", tokens.expires_at.toString());
   }
+
+  if (CLIENT_ID) {
+    await addKeyValue("twitter_client_id", CLIENT_ID);
+  }
+
+  return true;
 };
 
 export const clearTokenKVStore = async () => {

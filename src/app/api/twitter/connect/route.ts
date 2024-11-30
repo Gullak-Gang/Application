@@ -1,5 +1,6 @@
-import { STATE, authClient } from "@/services/twitter";
+import { authClient, STATE } from "@/lib/twitter-sdk";
 import { type NextRequest, NextResponse } from "next/server";
+
 
 export const fetchCache = "force-no-store";
 export const revalidate = 0;
