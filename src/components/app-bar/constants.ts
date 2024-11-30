@@ -1,4 +1,4 @@
-import { LifeBuoy, LucideLayoutDashboard, PlugZapIcon, SendIcon, TextCursorInputIcon } from "lucide-react";
+import { BotIcon, LifeBuoy, LucideLayoutDashboard, PlugZapIcon, SendIcon } from "lucide-react";
 
 export const NAV_MAIN = [
   {
@@ -7,14 +7,14 @@ export const NAV_MAIN = [
     icon: LucideLayoutDashboard,
   },
   {
-    title: "Prompts",
-    url: "/prompt",
-    icon: TextCursorInputIcon,
-  },
-  {
     title: "Connect",
     url: "/connect",
     icon: PlugZapIcon,
+  },
+  {
+    title: "Assistant",
+    url: "/assistant",
+    icon: BotIcon,
   },
 ];
 

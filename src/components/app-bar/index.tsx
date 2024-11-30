@@ -1,10 +1,5 @@
 "use client";
 
-import { ChartBarStacked } from "lucide-react";
-
-// import { NavMain } from "@/components/nav-main"
-// import { NavSecondary } from "@/components/nav-secondary"
-// import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
   SidebarContent,
@@ -14,6 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { ChartBarStacked } from "lucide-react";
 import Link from "next/link";
 import { NAV_MAIN, NAV_SECONDARY } from "./constants";
 import { NavGroup } from "./nav-main";

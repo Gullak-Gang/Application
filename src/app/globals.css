@@ -64,7 +64,7 @@ body {
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 25%;
     --input: 0 0% 15%;
-    --ring: var(--primary);
+    --ring: 0 0% 15%;
     --radius: 0.5rem;
     --sidebar-background: 0 0% 7%;
     --background: 0 0% 9%;

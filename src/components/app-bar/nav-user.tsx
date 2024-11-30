@@ -1,86 +1,46 @@
 "use client";
 
-import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
-import { useUser } from "@clerk/nextjs";
+import { SidebarMenu, SidebarMenuItem } from "@/components/ui/sidebar";
+import { UserButton, useUser } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
+import { useTheme } from "next-themes";
 import { Skeleton } from "../ui/skeleton";
+import { ThemeToggle } from "./theme-btn";
 
 export function NavUser() {
-  const { isMobile } = useSidebar();
   const { user } = useUser();
+  const { resolvedTheme } = useTheme();
 
   return (
     <SidebarMenu>
-      <SidebarMenuItem>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-            >
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user?.imageUrl} alt={user?.fullName ?? ""} />
-                <AvatarFallback className="rounded-lg">{user?.firstName?.charAt(0) ?? ""}</AvatarFallback>
-              </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                {user ? (
-                  <>
-                    <span className="truncate font-semibold">{user?.fullName}</span>
-                    <span className="truncate text-xs">{user?.emailAddresses[0].emailAddress}</span>
-                  </>
-                ) : (
-                  <>
-                    <Skeleton className="h-4 w-2/3 rounded-lg mb-1" />
-                    <Skeleton className="h-3 w-full rounded-lg" />
-                  </>
-                )}
-              </div>
-              <ChevronsUpDown className="ml-auto size-4" />
-            </SidebarMenuButton>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
-            align="end"
-            sideOffset={4}
-          >
-            <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user?.imageUrl} alt={user?.fullName ?? ""} />
-                  <AvatarFallback className="rounded-lg">{user?.firstName?.charAt(0) ?? ""}</AvatarFallback>
-                </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user?.fullName}</span>
-                  <span className="truncate text-xs">{user?.emailAddresses[0].emailAddress}</span>
-                </div>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <SidebarMenuItem className="flex flex-row items-center justify-between gap-2 group-data-[state=collapsed]:flex-col-reverse">
+        {user ? (
+          <UserButton
+            showName
+            appearance={{
+              baseTheme: resolvedTheme === "dark" ? dark : undefined,
+              elements: {
+                rootBox: "w-full",
+                userButtonTrigger: "w-full",
+                userButtonBox: "w-full flex-row-reverse justify-end p-2 gap-2 group-data-[state=collapsed]:gap-0",
+                userButtonOuterIdentifier: "font-medium group-data-[state=collapsed]:hidden",
+                avatarBox: "group-data-[state=collapsed]:size-5",
+              },
+            }}
+            userProfileProps={{
+              appearance: { baseTheme: resolvedTheme === "dark" ? dark : undefined },
+            }}
+          />
+        ) : (
+          <div className="flex flex-row gap-2 items-center flex-1 group-data-[state=collapsed]:gap-0">
+            <Skeleton className="size-7 rounded-full aspect-square" />
+            <div className="space-y-2 w-full flex-grow-1 peer-data-[state=collapsed]:hidden">
+              <Skeleton className="h-3 w-2/3 rounded" />
+              <Skeleton className="h-2 w-full rounded" />
+            </div>
+          </div>
+        )}
+        <ThemeToggle />
       </SidebarMenuItem>
     </SidebarMenu>
   );
