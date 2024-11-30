@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Play, XIcon } from "lucide-react";
+import { useState } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -79,6 +79,7 @@ export default function HeroVideoDialog({
 
   return (
     <div className={cn("relative", className)}>
+      {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
       <div className="relative cursor-pointer group" onClick={() => setIsVideoOpen(true)}>
         <img
           src={thumbnailSrc}
@@ -90,7 +91,9 @@ export default function HeroVideoDialog({
         <div className="absolute inset-0 flex items-center justify-center group-hover:scale-100 scale-[0.9] transition-all duration-200 ease-out rounded-2xl">
           <div className="bg-primary/10 flex items-center justify-center rounded-full backdrop-blur-md size-28">
             <div
-              className={`flex items-center justify-center bg-gradient-to-b from-primary/30 to-primary shadow-md rounded-full size-20 transition-all ease-out duration-200 relative group-hover:scale-[1.2] scale-100`}
+              className={
+                "flex items-center justify-center bg-gradient-to-b from-primary/30 to-primary shadow-md rounded-full size-20 transition-all ease-out duration-200 relative group-hover:scale-[1.2] scale-100"
+              }
             >
               <Play
                 className="size-8 text-white fill-white group-hover:scale-105 scale-100 transition-transform duration-200 ease-out"
@@ -121,11 +124,12 @@ export default function HeroVideoDialog({
               </motion.button>
               <div className="size-full border-2 border-white rounded-2xl overflow-hidden isolate z-[1] relative">
                 <iframe
+                  title={thumbnailAlt}
                   src={videoSrc}
                   className="size-full rounded-2xl"
                   allowFullScreen
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                ></iframe>
+                />
               </div>
             </motion.div>
           </motion.div>

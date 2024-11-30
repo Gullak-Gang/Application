@@ -22,7 +22,7 @@ const BreadCrumbGenerator = () => {
         </BreadcrumbItem>
         {segments?.map((segment, index) => (
           <>
-            <BreadcrumbSeparator className="hidden md:block" />
+            <BreadcrumbSeparator key={segment} className="hidden md:block" />
             <BreadcrumbItem key={segment}>
               <BreadcrumbPage className="capitalize">
                 <Link href={`/${segments.slice(0, index + 1).join("/")}`}>{segment}</Link>
