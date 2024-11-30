@@ -1,5 +1,4 @@
 import { fonts } from "@/lib/font";
-import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/providers/theme";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
@@ -17,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(fonts, "antialiased bg-background")}>
+      <body className={fonts}>
         <ClerkProvider>
           <ThemeProvider>{children}</ThemeProvider>
         </ClerkProvider>
