@@ -1,3 +1,4 @@
+import { CLIENT_ID } from "@/lib/twitter-sdk";
 import { addKeyValue, deleteKeyValue, getKeyValue } from "@/services/kestra/utils";
 import type { Token } from "@/types";
 
@@ -28,6 +29,10 @@ export const setTokenKVStore = async (tokens: Token) => {
 
   if (tokens.expires_at) {
     await addKeyValue("twitter_token_expires_at", tokens.expires_at.toString());
+  }
+
+  if (CLIENT_ID) {
+    await addKeyValue("twitter_client_id", CLIENT_ID);
   }
 
   return true;

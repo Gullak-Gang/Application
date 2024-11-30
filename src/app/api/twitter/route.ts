@@ -17,7 +17,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 
-    const { token } = await authClient.requestAccessToken(code);
+    console.log(authClient);
+    const { token } = await authClient.requestStatelessAccessToken(code);
     await setToken(token);
 
     return NextResponse.redirect(new URL("/dashboard", process.env.NEXT_PUBLIC_BASE_URL ?? request?.nextUrl));

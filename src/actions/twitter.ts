@@ -6,22 +6,12 @@ import { redirect } from "next/navigation";
 
 export const getAuthUrl = async () => {
   noStore();
-  const authUrl = await authClient.generateAuthURL({
-    state: STATE,
-    code_challenge_method: "s256",
-  });
+  const authUrl = authClient.generateStatelessAuthURL();
   redirect(authUrl);
 };
 
 export const getCurrentUser = async () => {
   try {
-    // const client = await getAuthedClient();
-    // const user = await client.users.findMyUser({
-    //   "user.fields": ["name", "profile_image_url", "username", "public_metrics"],
-    // });
-
-    // return user?.data;
-
     return await {
       profile_image_url: "https://pbs.twimg.com/profile_images/1854452857270833156/Kz5KDsaR_normal.jpg",
       public_metrics: {
