@@ -2,18 +2,15 @@ import { getAuthUrl } from "@/actions/twitter";
 import TwitterConnect from "./components/twitter-button";
 
 export default function Connect() {
-
-
-
   return (
     <section className="flex flex-col justify-center items-center gap-4 h-screen">
       <h1>Connect</h1>
       {/* {token ? ( */}
-        {/* <p>Token: {JSON.stringify(token)}</p> */}
+      {/* <p>Token: {JSON.stringify(token)}</p> */}
       {/* ) : ( */}
-        <form action={getAuthUrl}>
-          <TwitterConnect />
-        </form>
+      <form action={getAuthUrl}>
+        <TwitterConnect />
+      </form>
       {/* )} */}
     </section>
   );

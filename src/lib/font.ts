@@ -5,7 +5,7 @@ const poppins = Poppins({
   subsets: ["latin"],
   variable: "--font-sans",
   weight: ["400", "600", "800"],
-  preload: false
+  preload: false,
 });
 
 const fontMain = JetBrains_Mono({
