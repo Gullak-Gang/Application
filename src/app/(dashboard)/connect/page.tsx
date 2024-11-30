@@ -1,7 +1,7 @@
 import { getAuthUrl } from "@/actions/twitter";
 import TwitterConnect from "./components/twitter-button";
 
-export default function Connect() {
+const ConnectPage = () => {
   return (
     <section className="flex flex-col justify-center items-center gap-4 h-screen">
       <h1>Connect</h1>
@@ -15,3 +15,5 @@ export default function Connect() {
     </section>
   );
 }
+
+export default ConnectPage;
