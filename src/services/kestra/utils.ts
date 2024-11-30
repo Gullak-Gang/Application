@@ -1,4 +1,5 @@
-const BASE_URL = `${process.env.KV_BASE_URL}/api/v1/namespaces/system/kv`;
+const NAMESPACE = "hackfrost";
+const BASE_URL = `${process.env.KV_BASE_URL}/api/v1/namespaces/${NAMESPACE}/kv`;
 
 /**
  * Add a key-value pair to the store.
