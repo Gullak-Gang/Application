@@ -1,5 +1,11 @@
+import { Spinner } from "@/components/ui/spinner";
+
 const loading = () => {
-  return <div>loading</div>;
+  return (
+    <section className="flex justify-center items-center h-screen w-full">
+      <Spinner />
+    </section>
+  );
 };
 
 export default loading;
