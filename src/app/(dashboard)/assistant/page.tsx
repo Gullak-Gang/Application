@@ -1,20 +1,28 @@
-import { google } from "@ai-sdk/google";
-import { generateObject } from "ai";
-import { z } from "zod";
+"use client";
 
-const Assistant = async () => {
-  const result = await generateObject({
-    model: google("gemini-1.5-flash-latest"),
-    prompt: "Who created Java?",
-    schema: z.object({
-      headline: z.string().describe("headline of the response"),
-      details: z.string().describe("more details"),
-    }),
-  });
+import { Input } from "@/components/ui/input";
+import { useChat } from "ai/react";
 
-  console.log(result.object);
+export default function Assistant() {
+  const { messages, input, handleInputChange, handleSubmit } = useChat();
 
-  return <div>PromptPage</div>;
-};
+  return (
+    <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
+      {messages.map((m) => (
+        <div key={m.id} className="whitespace-pre-wrap">
+          {m.role === "user" ? "User: " : "AI: "}
+          {m.content}
+        </div>
+      ))}
 
-export default Assistant;
+      <form onSubmit={handleSubmit}>
+        <Input
+          className="fixed bottom-4 w-full max-w-md rounded-xl drop-shadow-2xl"
+          value={input}
+          placeholder="Ask something..."
+          onChange={handleInputChange}
+        />
+      </form>
+    </div>
+  );
+}
