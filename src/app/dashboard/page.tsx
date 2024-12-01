@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import {
   Card,
   CardContent,
@@ -14,12 +13,67 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Bar, BarChart, CartesianGrid, Cell, LabelList } from "recharts";
-
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Label,
+  LabelList,
+  Line,
+  LineChart,
+  Pie,
+  PieChart,
+  XAxis,
+} from "recharts";
+import React from "react";
 
 export const dynamic = "force-dynamic";
+const chartDataPie = [
+  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
+  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
+  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
+  { browser: "other", visitors: 190, fill: "var(--color-other)" },
+];
+const chartConfigPie = {
+  visitors: {
+    label: "Visitors",
+  },
+  chrome: {
+    label: "Chrome",
+    color: "blue",
+  },
+  safari: {
+    label: "Safari",
+    color: "yellow",
+  },  firefox: {
+    label: "Firefox",
+    color: "green",
+  },  edge: {
+    label: "Edge",
+    color: "pink",
+  },
+} satisfies ChartConfig;
 
+const chartDataLinear = [
+  { month: "January", desktop: 186 },
+  { month: "February", desktop: 305 },
+  { month: "March", desktop: 237 },
+  { month: "April", desktop: 73 },
+  { month: "May", desktop: 209 },
+  { month: "June", desktop: 214 },
+];
+const chartConfigLinear = {
+  desktop: {
+    label: "Desktop",
+    color: "green",
+  },
+} satisfies ChartConfig;
 export default async function Dashboard() {
+  const totalVisitors = React.useMemo(() => {
+    return chartDataPie.reduce((acc, curr) => acc + curr.visitors, 0);
+  }, []);
   const chartData = [
     { day: "Monday", Reposts: 186 },
     { day: "Tuesday", Reposts: 205 },
@@ -30,44 +84,120 @@ export default async function Dashboard() {
     { day: "Sunday", Reposts: 114 },
   ];
 
-  const chartConfig = {
+  const chartConfigBar = {
     visitors: {
       label: "Reposts",
     },
   } satisfies ChartConfig;
   return (
     <>
-      <div className="flex-col">
-        <div className="flex justify-around">
-          <div>
-            <Card>
+      <div className="grid grid-rows-2 gap-4">
+        <div className="grid grid-cols-3 gap-4">
+          <div className="h-[400px]">
+            <Card className="h-[400px]">
               <CardHeader>
                 <CardTitle>Reposts</CardTitle>
-                <CardDescription>Card Description</CardDescription>
+                <CardDescription>Total Reposts</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>Card Content</p>
+                <ChartContainer
+                  config={chartConfigPie}
+                  className="mx-auto aspect-square max-h-[250px]"
+                >
+                  <PieChart>
+                    <ChartTooltip
+                      cursor={false}
+                      content={<ChartTooltipContent hideLabel />}
+                    />
+                    <Pie
+                      data={chartDataPie}
+                      dataKey="visitors"
+                      nameKey="browser"
+                      strokeWidth={3}
+                      scale={5}
+                    >
+                      <Label
+                        content={({ viewBox }) => {
+                          if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                            return (
+                              <text
+                                x={viewBox.cx}
+                                y={viewBox.cy}
+                                textAnchor="middle"
+                                dominantBaseline="middle"
+                              >
+                                <tspan
+                                  x={viewBox.cx}
+                                  y={viewBox.cy}
+                                  className="fill-primary-foreground text-3xl font-bold"
+                                >
+                                  {totalVisitors.toLocaleString()}
+                                </tspan>
+                                <tspan
+                                  x={viewBox.cx}
+                                  y={(viewBox.cy || 0) + 24}
+                                  className="fill-primary-foreground"
+                                >
+                                  Reposts
+                                </tspan>
+                              </text>
+                            );
+                          }
+                        }}
+                      />
+                    </Pie>
+                  </PieChart>
+                </ChartContainer>
               </CardContent>
               <CardFooter>
-                <p>Card Footer</p>
+              <p>The number of Posts increased by x% this week</p>
               </CardFooter>
             </Card>
           </div>
-          <div>
+          <div className="h-[400px]">
             <Card>
               <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
+                <CardTitle>Reposts Timeline</CardTitle>
+                <CardDescription>Timeline of resposts</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>Card Content</p>
+                <ChartContainer config={chartConfigLinear}>
+                  <LineChart
+                    accessibilityLayer
+                    data={chartDataLinear}
+                    margin={{
+                      left: 12,
+                      right: 12,
+                    }}
+                  >
+                    <CartesianGrid vertical={false} />
+                    <XAxis
+                      dataKey="month"
+                      tickLine={false}
+                      axisLine={false}
+                      tickMargin={8}
+                      tickFormatter={(value) => value.slice(0, 3)}
+                    />
+                    <ChartTooltip
+                      cursor={false}
+                      content={<ChartTooltipContent hideLabel />}
+                    />
+                    <Line
+                      dataKey="desktop"
+                      type="linear"
+                      stroke="var(--color-desktop)"
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  </LineChart>
+                </ChartContainer>
               </CardContent>
               <CardFooter>
-                <p>Card Footer</p>
+                <p>X-hour was most active</p>
               </CardFooter>
             </Card>
           </div>
-          <div>
+          <div className="h-[400px]">
             <Card>
               <CardHeader>
                 <CardTitle>Card Title</CardTitle>
@@ -89,7 +219,7 @@ export default async function Dashboard() {
               <CardDescription>1/12/24 - 7/12/24</CardDescription>
             </CardHeader>
             <CardContent>
-              <ChartContainer config={chartConfig}>
+              <ChartContainer config={chartConfigBar}>
                 <BarChart accessibilityLayer data={chartData}>
                   <CartesianGrid vertical={false} />
                   <ChartTooltip
@@ -128,4 +258,4 @@ export default async function Dashboard() {
 }
 
 //total reposts
-// timeline of data from a specifc 
+// timeline of data from a specifc
