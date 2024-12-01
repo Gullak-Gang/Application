@@ -1,7 +1,7 @@
 "use server";
 
 import { authClient, getTwitterClient } from "@/lib/twitter-sdk";
-import { clearToken } from "@/services/store";
+import { addHashTagToDB, disconnectDB, getTokensFromDB } from "@/services/db/twitter";
 import { unstable_noStore as noStore } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -14,7 +14,7 @@ export const getAuthUrl = async () => {
 export const revokeToken = async () => {
   noStore();
   try {
-    clearToken();
+    disconnectDB();
   } catch (error) {
     console.error("Error revoking token:", error);
     throw error;
@@ -22,13 +22,27 @@ export const revokeToken = async () => {
   return;
 };
 
-export const getCurrentUser = async () => {
+export const addFormDataToDB = async (formData: FormData) => {
   noStore();
   try {
-    const client = getTwitterClient();
-    const user = await client.users.findMyUser();
-    return user?.data;
+    const hashTag = formData.get("hashTag");
+    if (!hashTag) return;
+    console.log(hashTag);
+    await addHashTagToDB(hashTag.toString());
   } catch (error) {
+    console.error("Error adding hash tag to db:", error);
+    throw error;
+  }
+  return;
+};
+
+export const getCurrentUser = async () => {
+  const token = await getTokensFromDB();
+
+  if (!token) {
     return null;
   }
+
+  const user = await getTwitterClient(token).users.findMyUser();
+  return user;
 };

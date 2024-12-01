@@ -3,7 +3,7 @@
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { MagicCard } from "@/components/ui/magic-card";
-import { analysisResultNew } from "@/lib/db/schema/schema";
+import type { analysisResultNew } from "@/lib/db/schema/schema";
 import { calculateWeeklyTrend, getDateRange } from "@/lib/utils";
 import type { InferSelectModel } from "drizzle-orm";
 import { TrendingDown, TrendingUp } from "lucide-react";

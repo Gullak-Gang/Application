@@ -5,7 +5,7 @@ import { BarChartCard, OverallScoreCard, PieChartCard } from "./components/stats
 export const dynamic = "force-dynamic";
 
 export default async function Dashboard() {
-  const { userId } = await auth()
+  const { userId } = await auth();
 
   const data = await getAnalysis(userId);
 
@@ -13,9 +13,9 @@ export default async function Dashboard() {
     return (
       <div className="flex flex-1 flex-col gap-4">
         <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-          <div className="aspect-video" >No Data</div>
-          <div className="aspect-video" >No Data</div>
-          <div className="aspect-video" >No Data</div>
+          <div className="aspect-video">No Data</div>
+          <div className="aspect-video">No Data</div>
+          <div className="aspect-video">No Data</div>
         </div>
         <div className="aspect-video flex-1">No Data</div>
       </div>

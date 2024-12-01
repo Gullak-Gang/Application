@@ -4,7 +4,7 @@ import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from 
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { MagicCard } from "@/components/ui/magic-card";
 import NumberTicker from "@/components/ui/number-ticker";
-import { analysisResultNew } from "@/lib/db/schema/schema";
+import type { analysisResultNew } from "@/lib/db/schema/schema";
 import { calculateAverageWordCounts, calculateOverallSentimentalScore, getDateRange } from "@/lib/utils";
 import type { InferSelectModel } from "drizzle-orm";
 import { useMemo } from "react";

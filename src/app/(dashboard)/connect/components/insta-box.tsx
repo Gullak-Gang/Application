@@ -4,13 +4,12 @@ import { Input } from "@/components/ui/input";
 import { MagicCard } from "@/components/ui/magic-card";
 import ShinyButton from "@/components/ui/shiny-button";
 import { Spinner } from "@/components/ui/spinner";
-import { saveToDB } from "@/lib/actions/instagram";
 import { useFormStatus } from "react-dom";
 
 const InstaConnectBox = () => {
   return (
     <MagicCard className="flex justify-center items-center w-full aspect-video">
-      <form action={saveToDB} className="flex flex-col space-y-4">
+      <form className="flex flex-col space-y-4">
         <Input type="text" name="access_token" placeholder="Access Token" className="w-3/4" required />
         <Input type="text" name="hashtag" placeholder="Hashtag (e.g., #nature)" className="w-3/4" required />
         <Input

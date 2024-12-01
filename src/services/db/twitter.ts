@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { twitterUserConnections } from "@/lib/db/schema/schema";
 import type { Token } from "@/types";
 import { auth } from "@clerk/nextjs/server";
+import { eq } from "drizzle-orm";
 
 export const getTokensFromDB = async (): Promise<Token | null> => {
   const { userId } = await auth();
@@ -55,4 +56,22 @@ export const setTokenDB = async (tokens: Token) => {
     });
 
   return true;
+};
+
+export const addHashTagToDB = async (hashTag: string) => {
+  const { userId } = await auth();
+  if (!userId) return;
+  db.update(twitterUserConnections).set({ hashtag: hashTag }).where(eq(twitterUserConnections.userId, userId));
+};
+
+export const disconnectDB = async () => {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("User is not logged in");
+  }
+
+  await db
+    .update(twitterUserConnections)
+    .set({ disconnectedAt: new Date().toUTCString() })
+    .where(eq(twitterUserConnections.userId, userId));
 };

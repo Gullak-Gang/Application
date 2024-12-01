@@ -1,5 +1,5 @@
 import { STATE, authClient } from "@/lib/twitter-sdk";
-import { setToken } from "@/services/store";
+import { setTokenDB } from "@/services/db/twitter";
 import { unstable_noStore as noStore } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     }
 
     const { token } = await authClient.requestStatelessAccessToken(code);
-    await setToken(token);
+    await setTokenDB(token);
 
     return NextResponse.redirect(new URL("/dashboard", process.env.NEXT_PUBLIC_BASE_URL ?? request?.nextUrl));
   } catch (error) {
