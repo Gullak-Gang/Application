@@ -7,25 +7,25 @@ import { MagicCard } from "@/components/ui/magic-card";
 import ShinyButton from "@/components/ui/shiny-button";
 import { Spinner } from "@/components/ui/spinner";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { addFormDataToDB, disconnectInsta, Insta_User } from "@/lib/actions/instagram";
+import { type Insta_User, addFormDataToDB, disconnectInsta } from "@/lib/actions/instagram";
 import { HelpCircleIcon } from "lucide-react";
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 import { useFormStatus } from "react-dom";
 
 const InstaConnectBox = ({ instagramUser }: { instagramUser: Insta_User }) => {
-
-  if (instagramUser) return (
-    <Card>
-      <CardHeader className="flex items-center justify-center gap-4">
-        <AnimatedShinyText className="font-semibold text-lg">Connected Instagram Account</AnimatedShinyText>
-      </CardHeader>
-      <CardFooter className="flex items-center justify-center">
-        <form action={disconnectInsta}>
-          <InstaConnect text="Disconnect" />
-        </form>
-      </CardFooter>
-    </Card >
-  )
+  if (instagramUser)
+    return (
+      <Card>
+        <CardHeader className="flex items-center justify-center gap-4">
+          <AnimatedShinyText className="font-semibold text-lg">Connected Instagram Account</AnimatedShinyText>
+        </CardHeader>
+        <CardFooter className="flex items-center justify-center">
+          <form action={disconnectInsta}>
+            <InstaConnect text="Disconnect" />
+          </form>
+        </CardFooter>
+      </Card>
+    );
 
   return (
     <MagicCard className="flex justify-center items-center w-full min-h-80">
@@ -44,10 +44,16 @@ const InstaConnectBox = ({ instagramUser }: { instagramUser: Insta_User }) => {
                     <h4 className="font-semibold mb-2">To get your Instagram access token:</h4>
                     <ul className="pl-4 space-y-2">
                       <li>
-                        1. Create an account at <a href="https://apify.com" className="underline">https://apify.com</a>
+                        1. Create an account at{" "}
+                        <a href="https://apify.com" className="underline">
+                          https://apify.com
+                        </a>
                       </li>
                       <li>
-                        2. Go to <a href="https://console.apify.com/settings/integrations" className="underline">https://console.apify.com/settings/integrations</a>
+                        2. Go to{" "}
+                        <a href="https://console.apify.com/settings/integrations" className="underline">
+                          https://console.apify.com/settings/integrations
+                        </a>
                       </li>
                       <li>3. Generate an API token</li>
                     </ul>
@@ -81,6 +87,10 @@ const InstaConnectBox = ({ instagramUser }: { instagramUser: Insta_User }) => {
 const InstaConnect = ({ text, ...props }: { text?: string } & Partial<ComponentProps<typeof ShinyButton>>) => {
   const { pending } = useFormStatus();
 
-  return <ShinyButton className="w-full" {...props}>{pending ? <Spinner /> : text ?? "Connect with instagram"}</ShinyButton>;
+  return (
+    <ShinyButton className="w-full" {...props}>
+      {pending ? <Spinner /> : (text ?? "Connect with instagram")}
+    </ShinyButton>
+  );
 };
 export default InstaConnectBox;

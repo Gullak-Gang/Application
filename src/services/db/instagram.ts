@@ -9,26 +9,26 @@ export const saveToDB = async (apifyToken: string, hashtag: string, posts: strin
   const { userId } = await auth();
   if (!userId) return;
   console.log({ apifyToken, hashtag, posts });
-  const data =
-    await db
-      .insert(instagramUserConnections)
-      .values({
-        userId: userId,
+  const data = await db
+    .insert(instagramUserConnections)
+    .values({
+      userId: userId,
+      apifyToken: apifyToken.toString(),
+      hashtag: hashtag.toString(),
+      numberOfPosts: posts.toString(),
+      disconnectedAt: null,
+    })
+    .onConflictDoUpdate({
+      target: instagramUserConnections.userId,
+      set: {
         apifyToken: apifyToken.toString(),
         hashtag: hashtag.toString(),
         numberOfPosts: posts.toString(),
         disconnectedAt: null,
-      })
-      .onConflictDoUpdate({
-        target: instagramUserConnections.userId,
-        set: {
-          apifyToken: apifyToken.toString(),
-          hashtag: hashtag.toString(),
-          numberOfPosts: posts.toString(),
-          disconnectedAt: null,
-        },
-      }).returning();
-  console.log(data)
+      },
+    })
+    .returning();
+  console.log(data);
 };
 
 export const removeFromDB = async () => {

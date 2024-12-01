@@ -37,6 +37,7 @@ export const getCurrentInsaUser = async () => {
     }
     return token;
   } catch (error) {
+    console.error(error);
     return null;
   }
 };
