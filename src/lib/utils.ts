@@ -75,3 +75,18 @@ export const calculateAverageWordCounts = (data: InferSelectModel<typeof analysi
 
   return chartData;
 };
+
+const sentimentScores: Record<string, number> = {
+  "POSITIVE": 10,
+  "NEUTRAL": 5,
+  "NEGATIVE": -5
+};
+
+export const calculateOverallSentimentalScore = (data: InferSelectModel<typeof analysisResult>[]) => {
+  const totalScore = data.reduce((acc, item) => {
+    return acc + sentimentScores[item.sentiment];
+  }, 0);
+
+  const overallSentimentalScore = totalScore / data.length;
+  return overallSentimentalScore > 0 ? overallSentimentalScore : 0;
+};

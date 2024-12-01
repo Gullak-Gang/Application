@@ -3,11 +3,12 @@
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { MagicCard } from "@/components/ui/magic-card";
+import NumberTicker from "@/components/ui/number-ticker";
 import type { analysisResult } from "@/lib/db/schema/schema";
-import { calculateAverageWordCounts, getDateRange } from "@/lib/utils";
+import { calculateAverageWordCounts, calculateOverallSentimentalScore, getDateRange } from "@/lib/utils";
 import type { InferSelectModel } from "drizzle-orm";
 import { useMemo } from "react";
-import { Bar, BarChart, CartesianGrid, Label, Pie, PieChart, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, Label, Pie, PieChart, XAxis, YAxis } from "recharts";
 
 const pieConfig = {
   posts: {
@@ -46,11 +47,11 @@ export function PieChartCard({ data }: { data: InferSelectModel<typeof analysisR
   }, [data]);
 
   return (
-    <MagicCard className="flex flex-col">
-      <CardHeader className="items-center pb-0">
+    <MagicCard className="flex flex-col  justify-center items-center">
+      <CardHeader>
         <CardTitle className="text-center">Feed Sentiment Distribution</CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 pb-0">
+      <CardContent className="flex-1">
         <ChartContainer config={pieConfig} className="mx-auto aspect-square max-h-[250px]">
           <PieChart>
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
@@ -83,15 +84,6 @@ export function PieChartCard({ data }: { data: InferSelectModel<typeof analysisR
 }
 
 
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-]
-
 const barConfig = {
   positive: {
     label: "Positive Word Count",
@@ -99,7 +91,7 @@ const barConfig = {
   },
   negative: {
     label: "Negative Word Count",
-    color: "hsl(var(--chart-3))",
+    color: "hsl(var(--chart-4))",
   },
 } satisfies ChartConfig
 
@@ -119,9 +111,9 @@ export const BarChartCard = ({ data }: { data: InferSelectModel<typeof analysisR
   }, [data]);
 
   return (
-    <MagicCard className="flex flex-col">
+    <MagicCard className="flex flex-col  items-center justify-center">
       <CardHeader>
-        <CardTitle>Word Count Analysis</CardTitle>
+        <CardTitle className="text-center">Word Count Analysis</CardTitle>
         <CardDescription>
         </CardDescription>
       </CardHeader>
@@ -136,6 +128,12 @@ export const BarChartCard = ({ data }: { data: InferSelectModel<typeof analysisR
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
             />
+            <YAxis
+              dataKey="positive"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+            />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="dashed" />}
@@ -146,7 +144,26 @@ export const BarChartCard = ({ data }: { data: InferSelectModel<typeof analysisR
         </ChartContainer>
       </CardContent>
       <CardFooter className="mt-auto block">
-        <p className="text-sm leading-none">{startDate} to {endDate}</p>
+        <p className="text-center text-sm leading-none">{startDate} to {endDate}</p>
+      </CardFooter>
+    </MagicCard>
+  )
+}
+
+export const OverallScoreCard = ({ data }: { data: InferSelectModel<typeof analysisResult>[] }) => {
+
+  const totalScore = useMemo(() => calculateOverallSentimentalScore(data), [data]);
+
+  return (
+    <MagicCard className="flex flex-col  items-center justify-center">
+      <CardHeader>
+        <CardTitle className="text-center">Overall Sentiment Score</CardTitle>
+      </CardHeader>
+      <CardContent className="mt-4">
+        <NumberTicker className="flex justify-center items-center h-full text-9xl font-mono font-extrabold pt-8" value={totalScore} decimalPlaces={1} />
+      </CardContent>
+      <CardFooter className="text-center text-sm">
+        Take action based on the score to improve customer satisfaction.
       </CardFooter>
     </MagicCard>
   )

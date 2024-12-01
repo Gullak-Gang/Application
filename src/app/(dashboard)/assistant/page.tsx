@@ -34,6 +34,7 @@ export default function Assistant() {
 
       <form onSubmit={handleSubmit}>
         <Input
+          autoFocus
           className="fixed bottom-4 w-full max-w-md rounded-xl drop-shadow-2xl"
           value={input}
           placeholder="Ask something..."

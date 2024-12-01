@@ -8,7 +8,7 @@ import { calculateWeeklyTrend, getDateRange } from "@/lib/utils";
 import type { InferSelectModel } from "drizzle-orm";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import { useMemo } from "react";
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
 const chartConfig = {
   analysis: {
@@ -25,6 +25,7 @@ export const MainChart = ({ data }: { data: InferSelectModel<typeof analysisResu
     return { endDate, startDate, chartData, trendPercentage, trendText };
   }, [data]);
 
+  console.log(chartData)
   return (
     <MagicCard className="flex flex-col">
       <CardHeader>
@@ -51,8 +52,14 @@ export const MainChart = ({ data }: { data: InferSelectModel<typeof analysisResu
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
+            <YAxis
+              dataKey="score"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+            />
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Line dataKey="score" type="natural" stroke="var(--color-desktop)" strokeWidth={2} dot={false} />
+            <Line dataKey="score" type="natural" stroke="var(--color-analysis)" strokeWidth={2} dot={false} />
           </LineChart>
         </ChartContainer>
       </CardContent>
