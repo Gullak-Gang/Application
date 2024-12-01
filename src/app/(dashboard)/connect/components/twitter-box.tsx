@@ -1,26 +1,28 @@
 "use client";
 
 import AnimatedShinyText from "@/components/ui/animated-shiny-text";
-import { CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { MagicCard } from "@/components/ui/magic-card";
 import ShinyButton from "@/components/ui/shiny-button";
 import { Spinner } from "@/components/ui/spinner";
-import { getAuthUrl, revokeToken } from "@/lib/actions/twitter";
+import { type Twitter_User, addFormDataToDB, getAuthUrl, revokeToken } from "@/lib/actions/twitter";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { ImageIcon, ThumbsUp, TwitterIcon, UserCheck, UserPlus } from "lucide-react";
+import { ThumbsUp, TwitterIcon, UserCheck, UserPlus } from "lucide-react";
+import { ComponentProps } from "react";
 import { useFormStatus } from "react-dom";
 
-const TwitterConnectBox = ({ twitterUser }: { twitterUser: any }) => {
+const TwitterConnectBox = ({ twitterUser }: { twitterUser: Twitter_User }) => {
   return (
-    <MagicCard className="flex justify-center items-center w-full aspect-video">
+    <MagicCard className="flex justify-center items-center w-full min-h-80">
       {twitterUser ? (
-        <section className="flex flex-col justify-center items-center gap-4">
-          <AnimatedShinyText className="text-center text-2xl font-semibold">Connect Account</AnimatedShinyText>
-          <TwitterProfileCard profile={twitterUser} />
+        <section className="flex flex-col justify-center items-center gap-8">
+          <AnimatedShinyText className="text-center text-2xl font-semibold">Connected Account</AnimatedShinyText>
 
-          <form action={revokeToken}>
-            <TwitterButton text="Disconnect" />
-          </form>
+          <div className="flex flex-wrap justify-center flex-col md:flex-row gap-4">
+            <TwitterProfileCard profile={twitterUser} />
+            <TwitterHashInput />
+          </div>
         </section>
       ) : (
         <form action={getAuthUrl}>
@@ -33,28 +35,25 @@ const TwitterConnectBox = ({ twitterUser }: { twitterUser: any }) => {
 
 export default TwitterConnectBox;
 
-const TwitterButton = ({ text }: { text?: string }) => {
+const TwitterButton = ({ text, ...props }: { text?: string } & Partial<ComponentProps<typeof ShinyButton>>) => {
   const { pending } = useFormStatus();
-  return <ShinyButton>{pending ? <Spinner /> : text}</ShinyButton>;
+  return <ShinyButton type="submit" {...props}>{pending ? <Spinner /> : text}</ShinyButton>;
 };
 
-const TwitterProfileCard = ({ profile }: { profile: any }) => {
-  const {
-    profile_image_url,
-    name,
-    username,
-    public_metrics: { followers_count, following_count, tweet_count, like_count, media_count },
-  } = profile;
+const TwitterProfileCard = ({ profile }: { profile: Twitter_User }) => {
+  if (!profile) return null;
+
+  const { profile_image_url, name, username, public_metrics } = profile;
 
   return (
-    <MagicCard>
+    <Card>
       <CardHeader className="flex items-center justify-center gap-4">
         <Avatar>
           <AvatarImage className="w-16 h-16 rounded-full" src={profile_image_url ?? ""} alt={name} />
           <AvatarFallback>{name?.slice(0, 2)}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col justify-center items-center">
-          <p className="font-semibold text-lg">{name}</p>
+          <AnimatedShinyText className="font-semibold text-lg">{name}</AnimatedShinyText>
           <p className="text-sm text-muted-foreground">@{username}</p>
         </div>
       </CardHeader>
@@ -62,25 +61,43 @@ const TwitterProfileCard = ({ profile }: { profile: any }) => {
       <CardContent className="mt-4 grid auto-rows-min gap-8 grid-cols-2">
         <div className="flex items-center">
           <TwitterIcon className="mr-2 text-blue-500" name="tweet" />
-          <p>{tweet_count} Tweets</p>
+          <p>{public_metrics?.tweet_count} Tweets</p>
         </div>
         <div className="flex items-center">
           <ThumbsUp className="mr-2 text-blue-500" name="like" />
-          <p>{like_count} Likes</p>
+          <p>{public_metrics?.listed_count} Listed</p>
         </div>
         <div className="flex items-center">
           <UserPlus className="mr-2 text-primary text-blue-500" name="followers" />
-          <p>{followers_count} Followers</p>
+          <p>{public_metrics?.followers_count} Followers</p>
         </div>
         <div className="flex items-center">
           <UserCheck className="mr-2 text-primary text-blue-500" name="following" />
-          <p>{following_count} Following</p>
-        </div>
-        <div className="flex items-center">
-          <ImageIcon className="mr-2 text-primary text-blue-500" name="media" />
-          <p>{media_count} Media</p>
+          <p>{public_metrics?.following_count} Following</p>
         </div>
       </CardContent>
-    </MagicCard>
+      <CardFooter className="flex items-center justify-center">
+        <form action={revokeToken}>
+          <TwitterButton text="Disconnect" />
+        </form>
+      </CardFooter>
+    </Card>
+  );
+};
+
+const TwitterHashInput = () => {
+  return (
+    <Card>
+      <CardContent>
+        <form action={addFormDataToDB} className="space-y-4 max-w-md">
+          <AnimatedShinyText className="font-semibold text-lg text-center">Hashtag</AnimatedShinyText>
+          <Input type="text" id="hashtag" name="hashtag" placeholder="Hashtag (e.g., #BlackFridaySale)" className="w-full" prefix="#" />
+
+          <AnimatedShinyText className="font-semibold text-lg text-center">No of Posts</AnimatedShinyText>
+          <Input type="text" id="posts" name="posts" placeholder="No of Posts" className="w-full" />
+          <TwitterButton text="Add Hashtag" className="w-full" />
+        </form>
+      </CardContent>
+    </Card>
   );
 };

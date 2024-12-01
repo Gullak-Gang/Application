@@ -6,12 +6,11 @@ import { eq } from "drizzle-orm";
 
 export const getTokensFromDB = async (): Promise<Token | null> => {
   const { userId } = await auth();
-
   if (!userId) return null;
 
   const tokens = await db.query.twitterUserConnections.findFirst({
-    where: (connections, { isNotNull, and, eq }) =>
-      and(eq(connections.userId, userId), isNotNull(connections.disconnectedAt)),
+    where: (connections, { isNull, and, eq }) =>
+      and(eq(connections.userId, userId), isNull(connections.disconnectedAt)),
   });
 
   if (!tokens?.accessToken || !tokens.refreshToken) return null;
@@ -58,10 +57,13 @@ export const setTokenDB = async (tokens: Token) => {
   return true;
 };
 
-export const addHashTagToDB = async (hashTag: string) => {
+export const addHashTagToDB = async (hashTag: string, posts: string) => {
   const { userId } = await auth();
   if (!userId) return;
-  db.update(twitterUserConnections).set({ hashtag: hashTag }).where(eq(twitterUserConnections.userId, userId));
+
+  await db.update(twitterUserConnections)
+    .set({ hashtag: hashTag, numberOfPosts: posts })
+    .where(eq(twitterUserConnections.userId, userId));
 };
 
 export const disconnectDB = async () => {

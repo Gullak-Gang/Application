@@ -1,6 +1,6 @@
 "use client";
 
-import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { MagicCard } from "@/components/ui/magic-card";
 import NumberTicker from "@/components/ui/number-ticker";
@@ -112,7 +112,6 @@ export const BarChartCard = ({ data }: { data: InferSelectModel<typeof analysisR
     <MagicCard className="flex flex-col  items-center justify-center">
       <CardHeader>
         <CardTitle className="text-center">Word Count Analysis</CardTitle>
-        <CardDescription></CardDescription>
       </CardHeader>
       <CardContent className="mt-4">
         <ChartContainer config={barConfig}>
