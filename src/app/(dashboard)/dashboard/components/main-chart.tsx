@@ -22,12 +22,11 @@ import { useMemo } from "react";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  analysis: {
+    label: "Analysis",
     color: "hsl(var(--chart-1))",
   },
 } satisfies ChartConfig
-
 
 export const MainChart = ({ data }: { data: InferSelectModel<typeof analysisResult>[] }) => {
   const { endDate, startDate, chartData, trendPercentage, trendText } = useMemo(() => {
