@@ -30,10 +30,10 @@ export const features = [
   },
   {
     Icon: BotIcon,
-    name: "AI Chatbot",
+    name: "AI Assistant",
     description: "Use the AI chatbot to get answers to your questions.",
     className: "col-span-3 lg:col-span-1",
-    href: "#",
+    href: "/assistant",
     cta: "Learn more",
     background: "",
   },

@@ -79,7 +79,7 @@ export default function Home() {
             </div>
             <div className="flex flex-col justify-center">
               <Circle ref={div6Ref} className="size-16">
-                <ChartBarStacked className="size-7" />
+                <ChartBarStacked className="size-7" color="black" />
               </Circle>
             </div>
             <div className="flex flex-col justify-center">
