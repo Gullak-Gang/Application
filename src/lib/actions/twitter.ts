@@ -1,6 +1,7 @@
 "use server";
 
-import { authClient } from "@/lib/twitter-sdk";
+import { authClient, getTwitterClient } from "@/lib/twitter-sdk";
+import { clearToken } from "@/services/store";
 import { unstable_noStore as noStore } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -10,24 +11,26 @@ export const getAuthUrl = async () => {
   redirect(authUrl);
 };
 
-export const getCurrentUser = async () => {
+export const revokeToken = async () => {
+  noStore();
   try {
-    return await {
-      profile_image_url: "https://pbs.twimg.com/profile_images/1854452857270833156/Kz5KDsaR_normal.jpg",
-      public_metrics: {
-        followers_count: 111,
-        following_count: 101,
-        tweet_count: 692,
-        listed_count: 0,
-        like_count: 18350,
-        media_count: 43,
-      },
-      name: "Drish",
-      id: "1240330996555239424",
-      username: "Drish_xD",
-    };
+    clearToken();
+  } catch (error) {
+    console.error("Error revoking token:", error);
+    throw error;
+  }
+  return;
+}
+
+export const getCurrentUser = async () => {
+  noStore();
+  try {
+    const client = getTwitterClient();
+    const user = await client.users.findMyUser();
+    return user?.data;
+
   } catch (error) {
     console.error("Error getting current user:", error);
-    throw error;
+    return null;
   }
 };

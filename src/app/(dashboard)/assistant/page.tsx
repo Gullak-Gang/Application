@@ -25,13 +25,6 @@ export default function Assistant() {
         ))}
       </div>
 
-      {/* {messages.map((m) => (
-        <div key={m.id} className="whitespace-pre-wrap">
-          {m.role === "user" ? "User: " : "AI: "}
-          {m.content}
-        </div>
-      ))} */}
-
       <form onSubmit={handleSubmit}>
         <Input
           autoFocus
