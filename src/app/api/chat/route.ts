@@ -1,3 +1,4 @@
+import { getAnalysis } from "@/lib/actions/analysis";
 import { createResource } from "@/lib/actions/resources";
 import { findRelevantContent } from "@/lib/ai/embedding";
 import { google } from "@ai-sdk/google";
@@ -7,7 +8,13 @@ import { z } from "zod";
 export async function POST(request: Request) {
   const { messages } = await request.json();
 
-  const systemMessage = "Hello world!";
+  const data = await getAnalysis();
+
+
+  const systemMessage = `${data}
+  You are a helpful assistant. You are allowed to use knowledge from your knowledge base to answer questions.
+    Use the addResource tool to add a resource to your knowledge base.
+  `;
 
   const result = streamText({
     model: google("gemini-1.5-flash-latest"),
