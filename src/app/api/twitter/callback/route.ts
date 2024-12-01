@@ -1,10 +1,10 @@
-import { authClient, STATE } from "@/lib/twitter-sdk";
+import { STATE, authClient } from "@/lib/twitter-sdk";
 import { setTokenKVStore } from "@/services/kestra";
 import { type NextRequest, NextResponse } from "next/server";
 
 export const fetchCache = "force-no-store";
 export const revalidate = 0;
-export const runtime = 'edge';
+export const runtime = "edge";
 
 export async function GET(request: NextRequest) {
   try {

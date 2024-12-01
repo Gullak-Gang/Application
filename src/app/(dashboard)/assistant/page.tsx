@@ -3,7 +3,6 @@
 import { Input } from "@/components/ui/input";
 import { useChat } from "@ai-sdk/react";
 
-
 export default function Assistant() {
   const { messages, input, handleInputChange, handleSubmit } = useChat();
 

@@ -1,35 +1,12 @@
 "use client";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-import NumberTicker from "@/components/ui/number-ticker";
-import React from "react";
-import NumberTicker from "@/components/ui/number-ticker";
-import React from "react";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  Label,
-  LabelList,
-  Line,
-  LineChart,
-  Pie,
-  PieChart,
 
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import NumberTicker from "@/components/ui/number-ticker";
+import { useMemo } from "react";
+import { Bar, BarChart, CartesianGrid, Cell, Label, LabelList, Line, LineChart, Pie, PieChart, XAxis } from "recharts";
 export const dynamic = "force-dynamic";
+
 const chartDataPie = [
   { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
   { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
@@ -73,8 +50,9 @@ const chartConfigLinear = {
     color: "green",
   },
 } satisfies ChartConfig;
+
 export default async function Dashboard() {
-  const totalVisitors = React.useMemo(() => {
+  const totalVisitors = useMemo(() => {
     return chartDataPie.reduce((acc, curr) => acc + curr.visitors, 0);
   }, []);
   const chartData = [
@@ -92,6 +70,7 @@ export default async function Dashboard() {
       label: "posts",
     },
   } satisfies ChartConfig;
+
   return (
     <>
       <div className="grid grid-rows-2 gap-4">
@@ -103,32 +82,15 @@ export default async function Dashboard() {
                 <CardDescription>Total posts</CardDescription>
               </CardHeader>
               <CardContent>
-                <ChartContainer
-                  config={chartConfigPie}
-                  className="mx-auto aspect-square max-h-[250px]"
-                >
+                <ChartContainer config={chartConfigPie} className="mx-auto aspect-square max-h-[250px]">
                   <PieChart>
-                    <ChartTooltip
-                      cursor={false}
-                      content={<ChartTooltipContent hideLabel />}
-                    />
-                    <Pie
-                      data={chartDataPie}
-                      dataKey="visitors"
-                      nameKey="browser"
-                      strokeWidth={3}
-                      scale={5}
-                    >
+                    <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+                    <Pie data={chartDataPie} dataKey="visitors" nameKey="browser" strokeWidth={3} scale={5}>
                       <Label
                         content={({ viewBox }) => {
                           if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                             return (
-                              <text
-                                x={viewBox.cx}
-                                y={viewBox.cy}
-                                textAnchor="middle"
-                                dominantBaseline="middle"
-                              >
+                              <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
                                 <tspan
                                   x={viewBox.cx}
                                   y={viewBox.cy}
@@ -136,11 +98,7 @@ export default async function Dashboard() {
                                 >
                                   {totalVisitors.toLocaleString()}
                                 </tspan>
-                                <tspan
-                                  x={viewBox.cx}
-                                  y={(viewBox.cy || 0) + 24}
-                                  className="fill-primary-foreground"
-                                >
+                                <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 24} className="fill-primary-foreground">
                                   posts
                                 </tspan>
                               </text>
@@ -181,17 +139,8 @@ export default async function Dashboard() {
                       tickMargin={8}
                       tickFormatter={(value) => value.slice(0, 3)}
                     />
-                    <ChartTooltip
-                      cursor={false}
-                      content={<ChartTooltipContent hideLabel />}
-                    />
-                    <Line
-                      dataKey="desktop"
-                      type="linear"
-                      stroke="var(--color-desktop)"
-                      strokeWidth={2}
-                      dot={false}
-                    />
+                    <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+                    <Line dataKey="desktop" type="linear" stroke="var(--color-desktop)" strokeWidth={2} dot={false} />
                   </LineChart>
                 </ChartContainer>
               </CardContent>
@@ -227,33 +176,19 @@ export default async function Dashboard() {
               <ChartContainer config={chartConfigBar}>
                 <BarChart accessibilityLayer data={chartData}>
                   <CartesianGrid vertical={false} />
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent hideLabel hideIndicator />}
-                  />
+                  <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel hideIndicator />} />
                   <Bar dataKey="posts">
                     <LabelList position="top" dataKey="day" fillOpacity={1} />
                     {chartData.map((item) => (
-                      <Cell
-                        key={item.day}
-                        fill={
-                          item.posts > 0
-                            ? "hsl(var(--chart-1))"
-                            : "hsl(var(--chart-2))"
-                        }
-                      />
+                      <Cell key={item.day} fill={item.posts > 0 ? "hsl(var(--chart-1))" : "hsl(var(--chart-2))"} />
                     ))}
                   </Bar>
                 </BarChart>
               </ChartContainer>
             </CardContent>
             <CardFooter className="flex-col items-start gap-2 text-sm">
-              <div className="flex gap-2 font-medium leading-none">
-                Trending up by 5.2% this month
-              </div>
-              <div className="leading-none text-muted-foreground">
-                Showing sentiment anaylsis for this week
-              </div>
+              <div className="flex gap-2 font-medium leading-none">Trending up by 5.2% this month</div>
+              <div className="leading-none text-muted-foreground">Showing sentiment anaylsis for this week</div>
             </CardFooter>
           </Card>
         </div>
@@ -261,6 +196,3 @@ export default async function Dashboard() {
     </>
   );
 }
-
-//total posts
-// timeline of data from a specifc

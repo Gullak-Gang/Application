@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { useInView, useMotionValue, useSpring } from "framer-motion";
+import { useEffect, useRef } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -43,16 +43,10 @@ export default function NumberTicker({
           }).format(Number(latest.toFixed(decimalPlaces)));
         }
       }),
-    [springValue, decimalPlaces],
+    [springValue, decimalPlaces]
   );
 
   return (
-    <span
-      className={cn(
-        "inline-block tabular-nums text-black dark:text-white tracking-wider",
-        className,
-      )}
-      ref={ref}
-    />
+    <span className={cn("inline-block tabular-nums text-black dark:text-white tracking-wider", className)} ref={ref} />
   );
 }
