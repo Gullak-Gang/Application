@@ -26,8 +26,8 @@ const DashboadLayout = async ({ children }: { children: React.ReactNode }) => {
               <BreadCrumbGenerator />
             </header>
             <main className="px-4">
-              {children}
               <DotPattern className={cn("[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]")} />
+              {children}
             </main>
           </SidebarInset>
         </SidebarProvider>

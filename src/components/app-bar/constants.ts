@@ -3,7 +3,7 @@ import { BotIcon, LifeBuoy, LucideLayoutDashboard, PlugZapIcon, SendIcon } from 
 export const NAV_MAIN = [
   {
     title: "Dashboard",
-    url: "/",
+    url: "/dashboard",
     icon: LucideLayoutDashboard,
   },
   {
