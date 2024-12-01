@@ -1,11 +1,9 @@
 "use client";
 
+import React, { useCallback, useEffect, useRef } from "react";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
-import type React from "react";
-import { useCallback, useEffect, useMemo, useRef } from "react";
 
 import { cn } from "@/lib/utils";
-import { useTheme } from "next-themes";
 
 export interface MagicCardProps extends React.HTMLAttributes<HTMLDivElement> {
   gradientSize?: number;
@@ -17,16 +15,9 @@ export function MagicCard({
   children,
   className,
   gradientSize = 200,
-  gradientColor,
+  gradientColor = "#262626",
   gradientOpacity = 0.8,
 }: MagicCardProps) {
-  const { theme } = useTheme();
-
-  const $gradientColor = useMemo(
-    () => ((gradientColor ?? theme === "dark") ? "#262626" : "#D9D9D955"),
-    [theme, gradientColor]
-  );
-
   const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(-gradientSize);
   const mouseY = useMotionValue(-gradientSize);
@@ -41,7 +32,7 @@ export function MagicCard({
         mouseY.set(clientY - top);
       }
     },
-    [mouseX, mouseY]
+    [mouseX, mouseY],
   );
 
   const handleMouseOut = useCallback(
@@ -52,7 +43,7 @@ export function MagicCard({
         mouseY.set(-gradientSize);
       }
     },
-    [handleMouseMove, mouseX, gradientSize, mouseY]
+    [handleMouseMove, mouseX, gradientSize, mouseY],
   );
 
   const handleMouseEnter = useCallback(() => {
@@ -82,8 +73,8 @@ export function MagicCard({
     <div
       ref={cardRef}
       className={cn(
-        "group relative flex size-full overflow-hidden rounded-xl bg-card/40 border text-foreground",
-        className
+        "group relative flex size-full overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-900 border text-black dark:text-white",
+        className,
       )}
     >
       <div className="relative z-10">{children}</div>
@@ -91,7 +82,7 @@ export function MagicCard({
         className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
           background: useMotionTemplate`
-            radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px, ${$gradientColor}, transparent 100%)
+            radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px, ${gradientColor}, transparent 100%)
           `,
           opacity: gradientOpacity,
         }}
