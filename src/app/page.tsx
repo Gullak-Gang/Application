@@ -1,8 +1,10 @@
 "use client";
 
 import LandingNavigation from "@/components/landing-navbar";
+import { features } from "@/components/landing-navbar/bento";
 import { Circle, Icons } from "@/components/landing-navbar/icons";
 import { AnimatedBeam } from "@/components/ui/animated-beam";
+import { BentoCard, BentoGrid } from "@/components/ui/bento-grid";
 import Particles from "@/components/ui/particles";
 import { RainbowButton } from "@/components/ui/rainbow-button";
 import Ripple from "@/components/ui/ripple";
@@ -96,6 +98,7 @@ export default function Home() {
       </section>
 
       {/* Section 3 */}
+
       <section className="flex flex-col justify-center items-center space-y-4 mb-40">
         <h2 className="font-semibold text-4xl text-card-foreground">Complete feedback Anaylsis</h2>
         <p className="font-light text-lg text-card-foreground w-2/3 text-center text-balance">
@@ -109,6 +112,16 @@ export default function Home() {
           className="bg-contain w-full"
           src="/images/cover.png"
         />
+      </section>
+
+
+      {/* Section 4 */}
+      <section className="flex flex-col justify-center items-center space-y-6 mt-4 mb-40">
+        <BentoGrid className="w-2/3">
+          {features.map((feature, idx) => (
+            <BentoCard key={idx} {...feature} />
+          ))}
+        </BentoGrid>
       </section>
 
       {/* Section 4 */}
