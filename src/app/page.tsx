@@ -114,7 +114,6 @@ export default function Home() {
         />
       </section>
 
-
       {/* Section 4 */}
       <section className="flex flex-col justify-center items-center space-y-6 mt-4 mb-40">
         <BentoGrid className="w-2/3">
