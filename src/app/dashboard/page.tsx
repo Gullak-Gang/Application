@@ -27,6 +27,7 @@ import {
   XAxis,
 } from "recharts";
 import React from "react";
+import NumberTicker from "@/components/ui/number-ticker";
 
 export const dynamic = "force-dynamic";
 const chartDataPie = [
@@ -47,10 +48,12 @@ const chartConfigPie = {
   safari: {
     label: "Safari",
     color: "yellow",
-  },  firefox: {
+  },
+  firefox: {
     label: "Firefox",
     color: "green",
-  },  edge: {
+  },
+  edge: {
     label: "Edge",
     color: "pink",
   },
@@ -75,18 +78,18 @@ export default async function Dashboard() {
     return chartDataPie.reduce((acc, curr) => acc + curr.visitors, 0);
   }, []);
   const chartData = [
-    { day: "Monday", Reposts: 186 },
-    { day: "Tuesday", Reposts: 205 },
-    { day: "Wednesday", Reposts: -207 },
-    { day: "Thursday", Reposts: 173 },
-    { day: "Friday", Reposts: -209 },
-    { day: "Saturday", Reposts: 214 },
-    { day: "Sunday", Reposts: 114 },
+    { day: "Monday", posts: 186 },
+    { day: "Tuesday", posts: 205 },
+    { day: "Wednesday", posts: -207 },
+    { day: "Thursday", posts: 173 },
+    { day: "Friday", posts: -209 },
+    { day: "Saturday", posts: 214 },
+    { day: "Sunday", posts: 114 },
   ];
 
   const chartConfigBar = {
     visitors: {
-      label: "Reposts",
+      label: "posts",
     },
   } satisfies ChartConfig;
   return (
@@ -96,8 +99,8 @@ export default async function Dashboard() {
           <div className="h-[400px]">
             <Card className="h-[400px]">
               <CardHeader>
-                <CardTitle>Reposts</CardTitle>
-                <CardDescription>Total Reposts</CardDescription>
+                <CardTitle>posts</CardTitle>
+                <CardDescription>Total posts</CardDescription>
               </CardHeader>
               <CardContent>
                 <ChartContainer
@@ -138,7 +141,7 @@ export default async function Dashboard() {
                                   y={(viewBox.cy || 0) + 24}
                                   className="fill-primary-foreground"
                                 >
-                                  Reposts
+                                  posts
                                 </tspan>
                               </text>
                             );
@@ -150,15 +153,15 @@ export default async function Dashboard() {
                 </ChartContainer>
               </CardContent>
               <CardFooter>
-              <p>The number of Posts increased by x% this week</p>
+                <p>The number of Posts increased by x% this week</p>
               </CardFooter>
             </Card>
           </div>
           <div className="h-[400px]">
             <Card>
               <CardHeader>
-                <CardTitle>Reposts Timeline</CardTitle>
-                <CardDescription>Timeline of resposts</CardDescription>
+                <CardTitle>posts Timeline</CardTitle>
+                <CardDescription>Timeline of posts</CardDescription>
               </CardHeader>
               <CardContent>
                 <ChartContainer config={chartConfigLinear}>
@@ -200,14 +203,16 @@ export default async function Dashboard() {
           <div className="h-[400px]">
             <Card>
               <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
+                <CardTitle>Sentimental Score</CardTitle>
+                <CardDescription>Sentiment Analysis</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>Card Content</p>
+                <p className="whitespace-pre-wrap text-4xl font-medium tracking-tighter text-black dark:text-white">
+                  <NumberTicker value={56.63} decimalPlaces={2} />
+                </p>
               </CardContent>
               <CardFooter>
-                <p>Card Footer</p>
+                <p>Sentimen Analysis for the week</p>
               </CardFooter>
             </Card>
           </div>
@@ -226,13 +231,13 @@ export default async function Dashboard() {
                     cursor={false}
                     content={<ChartTooltipContent hideLabel hideIndicator />}
                   />
-                  <Bar dataKey="Reposts">
+                  <Bar dataKey="posts">
                     <LabelList position="top" dataKey="day" fillOpacity={1} />
                     {chartData.map((item) => (
                       <Cell
                         key={item.day}
                         fill={
-                          item.Reposts > 0
+                          item.posts > 0
                             ? "hsl(var(--chart-1))"
                             : "hsl(var(--chart-2))"
                         }
@@ -257,5 +262,5 @@ export default async function Dashboard() {
   );
 }
 
-//total reposts
+//total posts
 // timeline of data from a specifc
