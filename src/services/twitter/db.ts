@@ -35,13 +35,24 @@ export const setTokenDB = async (tokens: Token) => {
     throw new Error("No token found");
   }
 
-  await db.insert(twitterUserConnections).values({
-    userId: userId,
-    accessToken: tokens.access_token,
-    refreshToken: tokens.refresh_token,
-    expiresAt: tokens.expires_at.toString(),
-    disconnectedAt: null,
-  });
+  await db
+    .insert(twitterUserConnections)
+    .values({
+      userId: userId,
+      accessToken: tokens.access_token,
+      refreshToken: tokens.refresh_token,
+      expiresAt: tokens.expires_at.toString(),
+      disconnectedAt: null,
+    })
+    .onConflictDoUpdate({
+      target: twitterUserConnections.userId,
+      set: {
+        accessToken: tokens.access_token,
+        refreshToken: tokens.refresh_token,
+        expiresAt: tokens.expires_at.toString(),
+        disconnectedAt: null,
+      },
+    });
 
   return true;
 };

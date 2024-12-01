@@ -36,7 +36,7 @@ export const analysisResult = pgTable(
 
 export const twitterUserConnections = pgTable("twitter_user_connections", {
   id: uuid().primaryKey().defaultRandom(),
-  userId: text("user_id").notNull(),
+  userId: text("user_id").unique().notNull(),
   hashtag: text("hashtag"),
   numberOfPosts: numeric("number_of_posts"),
   accessToken: text("access_token").notNull(),
@@ -49,7 +49,7 @@ export const twitterUserConnections = pgTable("twitter_user_connections", {
 
 export const instagramUserConnections = pgTable("instagram_user_connections", {
   id: uuid().primaryKey().defaultRandom(),
-  userId: text("user_id").notNull(),
+  userId: text("user_id").unique().notNull(),
   hashtag: text("hashtag"),
   numberOfPosts: numeric("number_of_posts"),
   apifyToken: text("apify_token").notNull(),

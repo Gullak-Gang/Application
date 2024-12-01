@@ -19,5 +19,12 @@ export const saveToDB = async (formData: FormData) => {
       apifyToken: apifyToken.toString(),
       disconnectedAt: null,
     })
+    .onConflictDoUpdate({
+      target: instagramUserConnections.userId,
+      set: {
+        apifyToken: apifyToken.toString(),
+        disconnectedAt: null,
+      },
+    })
     .returning();
 };
