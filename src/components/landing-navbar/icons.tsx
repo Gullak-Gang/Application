@@ -1,17 +1,5 @@
-import { ChartBarStacked } from "lucide-react";
-import { ImageResponse } from "next/og";
-
-// export const runtime = "edge";
-
-export const size = {
-  width: 32,
-  height: 32,
-};
-export const contentType = "image/png";
-
-export default function Icon() {
-  return new ImageResponse(<ChartBarStacked className="size-4" />, { ...size });
-}
+import { cn } from "@/lib/utils";
+import { forwardRef } from "react";
 
 export const Icons = {
   googleDrive: () => (
@@ -92,3 +80,21 @@ export const Icons = {
     </svg>
   ),
 };
+
+export const Circle = forwardRef<HTMLDivElement, { className?: string; children?: React.ReactNode }>(
+  ({ className, children }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "z-10 flex size-12 items-center justify-center rounded-full border-2 border-border bg-white p-3 shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)]",
+          className
+        )}
+      >
+        {children}
+      </div>
+    );
+  }
+);
+
+Circle.displayName = "Circle";

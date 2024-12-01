@@ -52,6 +52,11 @@ body {
     --chart-3: 142 88% 28%;
     --chart-4: 137 55% 15%;
     --chart-5: 141 40% 9%;
+    --color-1: 0 100% 63%;
+    --color-2: 270 100% 63%;
+    --color-3: 210 100% 63%;
+    --color-4: 195 100% 63%;
+    --color-5: 90 100% 63%;
   }
 
   .dark {
@@ -94,6 +99,11 @@ body {
     --chart-3: 140 74% 16%;
     --chart-4: 137 55% 10%;
     --chart-5: 141 40% 5%;
+    --color-1: 0 100% 63%;
+    --color-2: 270 100% 63%;
+    --color-3: 210 100% 63%;
+    --color-4: 195 100% 63%;
+    --color-5: 90 100% 63%;
   }
 }
 
@@ -103,7 +113,7 @@ body {
   }
 
   body {
-    @apply bg-background text-foreground antialiased text-pretty;
+    @apply bg-background text-foreground antialiased text-pretty scroll-smooth;
   }
 }
 
@@ -117,4 +127,13 @@ input[type="number"].no-arrows::-webkit-outer-spin-button {
 input[type="number"].no-arrows {
   -moz-appearance: textfield;
   /* Hides arrows in Firefox */
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
