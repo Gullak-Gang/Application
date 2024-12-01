@@ -1,10 +1,11 @@
 import { AppSidebar } from "@/components/app-bar";
 import BreadCrumbGenerator from "@/components/breadcrumb";
 import DotPattern from "@/components/ui/dot-pattern";
+import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
-import { Separator } from "@radix-ui/react-separator";
+
 import { cookies } from "next/headers";
 
 const DashboadLayout = async ({ children }: { children: React.ReactNode }) => {
@@ -25,8 +26,8 @@ const DashboadLayout = async ({ children }: { children: React.ReactNode }) => {
               <BreadCrumbGenerator />
             </header>
             <main className="px-4">
-              {children}
               <DotPattern className={cn("[mask-image:radial-gradient(300px_circle_at_center,white,transparent)]")} />
+              {children}
             </main>
           </SidebarInset>
         </SidebarProvider>

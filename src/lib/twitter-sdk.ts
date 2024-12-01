@@ -1,3 +1,5 @@
+import type { Token } from "@/types";
+import { Client } from "twitter-api-sdk";
 import { OAuth2User } from "twitter-api-sdk/dist/OAuth2User";
 
 export const STATE = String(process.env.CLIENT_STATE);
@@ -27,3 +29,8 @@ export const authClient = new StatelessOAuth2User({
   callback: CALLBACK_URL,
   scopes: ["tweet.read", "users.read", "offline.access"],
 });
+
+export const getTwitterClient = (token: Token) => {
+  authClient.token = token;
+  return new Client(authClient);
+};
