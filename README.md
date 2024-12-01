@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend for Social Media Sentiment Analysis
+
+This repository contains the frontend implementation of a platform for performing sentiment analysis on social media posts for Instagram, Twitter, and custom CSV files. Built with **Next.js**, this project complements the backend workflows managed in Kestra, delivering a user-friendly interface for interacting with the sentiment analysis pipelines.
+
+---
+
+## Key Features
+- **User Authentication**: Powered by [Clerk](https://clerk.dev) for secure user sign-ups and logins.
+- **Data Visualization**: Rich visualizations using [Recharts](https://recharts.org) for sentiment analysis results.
+- **Dynamic Themes**: Dark and light mode support via [next-themes](https://github.com/pacocoursey/next-themes).
+- **Interactive UI Components**: Built using [Radix UI](https://radix-ui.com) for accessibility and design consistency.
+- **Database Management**: Integration with **Drizzle ORM** for interacting with the database.
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- **Node.js**: Ensure you have Node.js (v18 or above) installed.
+- **PostgreSQL**: Database for storing user data and analysis results.
+- **Environment Variables**: Configure a `.env` file in the project root with the following keys:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+# Application Base URL
+NEXT_PUBLIC_BASE_URL=""
+
+# Twitter API
+CLIENT_ID=""
+CLIENT_SECRET=""
+CLIENT_STATE=""
+
+# Clerk (User Authentication)
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=""
+CLERK_SECRET_KEY=""
+NEXT_PUBLIC_CLERK_SIGN_IN_URL="/sign-in"
+NEXT_PUBLIC_CLERK_SIGN_UP_URL="/sign-up"
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL="/dashboard"
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL="/dashboard"
+
+# Gemini AI API
+GOOGLE_GENERATIVE_AI_API_KEY=""
+
+# Database Connection
+DATABASE_URL=""
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Clone the Repository
+    ```
+    git clone https://github.com/Gullak-Gang/Application
+    ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Install Dependencies
 
-## Learn More
+    ```
+    npm i -g pnpm
+    pnpm install
+    ```
+- Run Development Server
 
-To learn more about Next.js, take a look at the following resources:
+    ```
+    pnpm dev
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Access the app at http://localhost:3000.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+# Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+    src/
+    ├── app/                # Next.js pages
+    ├── components/         # Reusable UI components
+    ├── styles/             # Tailwind CSS configurations
+    ├── lib/                # Utilities and services (e.g., API clients)
+    ├── hooks/              # Custom React hooks
+    ├── providers/          # Client Provider
+    ├── services/           # services (db, actions)
+    ├── types/              # types
+    └── public/             # public assets
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Dependencies
+
+- Core Packages
+  - Next.js: Framework for building React applications.
+  - React: Library for building user interfaces.
+  - Tailwind CSS: Utility-first CSS framework.
+
+- UI and State Management
+  - ShadCn UI & Magic UI: Reusable UI components.
+  - Radix UI: Accessible and customizable UI primitives.
+  - Framer Motion: For animations and transitions.
+
+- Database and ORM
+  - Drizzle ORM: Type-safe database management.
+  - PostgreSQL: Relational database for backend data.
+
+- APIs and SDKs
+  - Twitter API SDK: Interacts with the Twitter API.
+  - Google AI SDK: For AI and sentiment analysis tasks.
+
+
+# License
+
+This project is licensed under the MIT License. See the LICENSE file for more information.
