@@ -16,7 +16,6 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 
-    console.log(authClient);
     const { token } = await authClient.requestStatelessAccessToken(code);
     await setToken(token);
 

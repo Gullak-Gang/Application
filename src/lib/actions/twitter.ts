@@ -1,12 +1,12 @@
 "use server";
 
-import { STATE, authClient } from "@/lib/twitter-sdk";
+import { authClient } from "@/lib/twitter-sdk";
 import { unstable_noStore as noStore } from "next/cache";
 import { redirect } from "next/navigation";
 
 export const getAuthUrl = async () => {
   noStore();
-  const authUrl = authClient.generateStatelessAuthURL();
+  const authUrl = await authClient.generateStatelessAuthURL();
   redirect(authUrl);
 };
 

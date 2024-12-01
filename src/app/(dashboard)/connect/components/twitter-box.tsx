@@ -1,9 +1,9 @@
 "use client";
 
-import { getAuthUrl } from "@/actions/twitter";
 import { MagicCard } from "@/components/ui/magic-card";
 import ShinyButton from "@/components/ui/shiny-button";
 import { Spinner } from "@/components/ui/spinner";
+import { getAuthUrl } from "@/lib/actions/twitter";
 import { useFormStatus } from "react-dom";
 
 const TwitterConnectBox = () => {
