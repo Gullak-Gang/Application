@@ -1,36 +1,89 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import type { analysisResult } from "@/lib/db/schema/schema";
-import type { InferSelectModel } from "drizzle-orm";
-import { Bar, BarChart, CartesianGrid, Cell, LabelList } from "recharts";
+'use client';
+
+import {
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { MagicCard } from "@/components/ui/magic-card";
+import { analysisResult } from "@/lib/db/schema/schema";
+import { calculateWeeklyTrend, getDateRange } from "@/lib/utils";
+import { InferSelectModel } from "drizzle-orm";
+import { TrendingDown, TrendingUp } from "lucide-react";
+import { useMemo } from "react";
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+
+const chartConfig = {
+  desktop: {
+    label: "Desktop",
+    color: "hsl(var(--chart-1))",
+  },
+} satisfies ChartConfig
+
 
 export const MainChart = ({ data }: { data: InferSelectModel<typeof analysisResult>[] }) => {
+  const { endDate, startDate, chartData, trendPercentage, trendText } = useMemo(() => {
+    const { endDate, startDate } = getDateRange(data);
+    const chartData = data.map((item, index) => ({ id: (index + 1).toString(), score: item?.score }));
+    const { trendPercentage, trendText } = calculateWeeklyTrend(data);
+    return { endDate, startDate, chartData, trendPercentage, trendText };
+  }, [data])
+
   return (
-    <Card>
+    <MagicCard className="flex flex-col">
       <CardHeader>
-        <CardTitle>Bar Chart - Negative</CardTitle>
-        <CardDescription>1/12/24 - 7/12/24</CardDescription>
+        <CardTitle>Analysis</CardTitle>
+        <CardDescription>{startDate} to {endDate}</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfigBar}>
-          <BarChart accessibilityLayer data={chartData}>
+        <ChartContainer config={chartConfig}>
+          <LineChart
+            accessibilityLayer
+            data={chartData}
+            margin={{
+              left: 12,
+              right: 12,
+            }}
+          >
             <CartesianGrid vertical={false} />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel hideIndicator />} />
-            <Bar dataKey="posts">
-              <LabelList position="top" dataKey="day" fillOpacity={1} />
-              {data?.map((item) => (
-                <Cell key={item.day} fill={item.posts > 0 ? "hsl(var(--chart-1))" : "hsl(var(--chart-2))"} />
-              ))}
-            </Bar>
-          </BarChart>
+            <XAxis
+              dataKey="id"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tickFormatter={(value) => value.slice(0, 3)}
+            />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
+            <Line
+              dataKey="score"
+              type="natural"
+              stroke="var(--color-desktop)"
+              strokeWidth={2}
+              dot={false}
+            />
+          </LineChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">Trending up by 5.2% this month</div>
-        <div className="leading-none text-muted-foreground">Showing sentiment anaylsis for this week</div>
-      </CardFooter>
-    </Card>
+      {trendText ?
+        <CardFooter className="flex gap-2 font-medium leading-none">
+          Trending {trendText} by {trendPercentage}% {trendPercentage > 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
+        </CardFooter>
+        : null}
+    </MagicCard>
+
   );
 };
 
 export default MainChart;
+
