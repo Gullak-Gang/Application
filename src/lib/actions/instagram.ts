@@ -12,7 +12,7 @@ export const saveToDB = async (formData: FormData) => {
   const apifyToken = formData.get("apifyToken");
   if (!apifyToken) return;
 
-  const result = await db
+  await db
     .insert(instagramUserConnections)
     .values({
       userId: userId,
@@ -20,5 +20,4 @@ export const saveToDB = async (formData: FormData) => {
       disconnectedAt: null,
     })
     .returning();
-  console.log(result);
 };

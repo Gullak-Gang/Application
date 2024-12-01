@@ -3,7 +3,7 @@
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { MagicCard } from "@/components/ui/magic-card";
-import type { analysisResult } from "@/lib/db/schema/schema";
+import { analysisResultNew } from "@/lib/db/schema/schema";
 import { calculateWeeklyTrend, getDateRange } from "@/lib/utils";
 import type { InferSelectModel } from "drizzle-orm";
 import { TrendingDown, TrendingUp } from "lucide-react";
@@ -17,7 +17,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export const MainChart = ({ data }: { data: InferSelectModel<typeof analysisResult>[] }) => {
+export const MainChart = ({ data }: { data: InferSelectModel<typeof analysisResultNew>[] }) => {
   const { endDate, startDate, chartData, trendPercentage, trendText } = useMemo(() => {
     const { endDate, startDate } = getDateRange(data);
     const chartData = data.map((item, index) => ({ id: (index + 1).toString(), score: item?.score }));
@@ -25,7 +25,6 @@ export const MainChart = ({ data }: { data: InferSelectModel<typeof analysisResu
     return { endDate, startDate, chartData, trendPercentage, trendText };
   }, [data]);
 
-  console.log(chartData)
   return (
     <MagicCard className="flex flex-col">
       <CardHeader>
@@ -52,12 +51,7 @@ export const MainChart = ({ data }: { data: InferSelectModel<typeof analysisResu
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <YAxis
-              dataKey="score"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-            />
+            <YAxis dataKey="score" tickLine={false} axisLine={false} tickMargin={8} />
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
             <Line dataKey="score" type="natural" stroke="var(--color-analysis)" strokeWidth={2} dot={false} />
           </LineChart>

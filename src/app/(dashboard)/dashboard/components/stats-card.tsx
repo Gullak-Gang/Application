@@ -4,7 +4,7 @@ import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from 
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { MagicCard } from "@/components/ui/magic-card";
 import NumberTicker from "@/components/ui/number-ticker";
-import type { analysisResult } from "@/lib/db/schema/schema";
+import { analysisResultNew } from "@/lib/db/schema/schema";
 import { calculateAverageWordCounts, calculateOverallSentimentalScore, getDateRange } from "@/lib/utils";
 import type { InferSelectModel } from "drizzle-orm";
 import { useMemo } from "react";
@@ -28,7 +28,7 @@ const pieConfig = {
   },
 } satisfies ChartConfig;
 
-export function PieChartCard({ data }: { data: InferSelectModel<typeof analysisResult>[] }) {
+export function PieChartCard({ data }: { data: InferSelectModel<typeof analysisResultNew>[] }) {
   const { totalPosts, chartData } = useMemo(() => {
     const totalPosts = (data?.length ?? 0).toLocaleString();
     const sentimentCounts = data?.reduce(
@@ -83,7 +83,6 @@ export function PieChartCard({ data }: { data: InferSelectModel<typeof analysisR
   );
 }
 
-
 const barConfig = {
   positive: {
     label: "Positive Word Count",
@@ -93,9 +92,9 @@ const barConfig = {
     label: "Negative Word Count",
     color: "hsl(var(--chart-4))",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
-export const BarChartCard = ({ data }: { data: InferSelectModel<typeof analysisResult>[] }) => {
+export const BarChartCard = ({ data }: { data: InferSelectModel<typeof analysisResultNew>[] }) => {
   const { endDate, startDate, chartData } = useMemo(() => {
     const rawData = calculateAverageWordCounts(data);
     const { endDate, startDate } = getDateRange(data);
@@ -106,7 +105,6 @@ export const BarChartCard = ({ data }: { data: InferSelectModel<typeof analysisR
       negative: item.averageNegativeWordCount,
     }));
 
-
     return { endDate, startDate, chartData };
   }, [data]);
 
@@ -114,8 +112,7 @@ export const BarChartCard = ({ data }: { data: InferSelectModel<typeof analysisR
     <MagicCard className="flex flex-col  items-center justify-center">
       <CardHeader>
         <CardTitle className="text-center">Word Count Analysis</CardTitle>
-        <CardDescription>
-        </CardDescription>
+        <CardDescription></CardDescription>
       </CardHeader>
       <CardContent className="mt-4">
         <ChartContainer config={barConfig}>
@@ -128,30 +125,23 @@ export const BarChartCard = ({ data }: { data: InferSelectModel<typeof analysisR
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <YAxis
-              dataKey="positive"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="dashed" />}
-            />
+            <YAxis dataKey="positive" tickLine={false} axisLine={false} tickMargin={8} />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed" />} />
             <Bar dataKey="positive" fill="var(--color-positive)" radius={4} />
             <Bar dataKey="negative" fill="var(--color-negative)" radius={4} />
           </BarChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="mt-auto block">
-        <p className="text-center text-sm leading-none">{startDate} to {endDate}</p>
+        <p className="text-center text-sm leading-none">
+          {startDate} to {endDate}
+        </p>
       </CardFooter>
     </MagicCard>
-  )
-}
+  );
+};
 
-export const OverallScoreCard = ({ data }: { data: InferSelectModel<typeof analysisResult>[] }) => {
-
+export const OverallScoreCard = ({ data }: { data: InferSelectModel<typeof analysisResultNew>[] }) => {
   const totalScore = useMemo(() => calculateOverallSentimentalScore(data), [data]);
 
   return (
@@ -160,11 +150,15 @@ export const OverallScoreCard = ({ data }: { data: InferSelectModel<typeof analy
         <CardTitle className="text-center">Overall Sentiment Score</CardTitle>
       </CardHeader>
       <CardContent className="mt-4">
-        <NumberTicker className="flex justify-center items-center h-full text-9xl font-mono font-extrabold pt-8" value={totalScore} decimalPlaces={1} />
+        <NumberTicker
+          className="flex justify-center items-center h-full text-9xl font-mono font-extrabold pt-8"
+          value={totalScore}
+          decimalPlaces={1}
+        />
       </CardContent>
       <CardFooter className="text-center text-sm">
         Take action based on the score to improve customer satisfaction.
       </CardFooter>
     </MagicCard>
-  )
-}
+  );
+};

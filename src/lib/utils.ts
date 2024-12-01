@@ -2,13 +2,12 @@ import { type ClassValue, clsx } from "clsx";
 import { format, getISOWeek, getYear, isValid, max, min, parseISO } from "date-fns";
 import type { InferSelectModel } from "drizzle-orm";
 import { twMerge } from "tailwind-merge";
-import type { analysisResult } from "./db/schema/schema";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const getDateRange = (data: InferSelectModel<typeof analysisResult>[]) => {
+export const getDateRange = (data: InferSelectModel<typeof analysisResultNew>[]) => {
   if (!data || data.length === 0) return { startDate: null, endDate: null };
 
   const dates = data.map((item) => parseISO(item.dateCreated ?? "")).filter(isValid);
@@ -21,7 +20,7 @@ export const getDateRange = (data: InferSelectModel<typeof analysisResult>[]) =>
   return { startDate, endDate };
 };
 
-export const calculateWeeklyTrend = (data: InferSelectModel<typeof analysisResult>[]) => {
+export const calculateWeeklyTrend = (data: InferSelectModel<typeof analysisResultNew>[]) => {
   if (!data || data.length === 0) return { trendPercentage: 0, trendText: null };
 
   const weeklyCounts: Record<string, number> = {};
@@ -53,16 +52,19 @@ export const calculateWeeklyTrend = (data: InferSelectModel<typeof analysisResul
   };
 };
 
-export const calculateAverageWordCounts = (data: InferSelectModel<typeof analysisResult>[]) => {
-  const sentimentGroups = data.reduce((acc, item) => {
-    if (!acc[item.sentiment]) {
-      acc[item.sentiment] = { positiveTotal: 0, negativeTotal: 0, count: 0 };
-    }
-    acc[item.sentiment].positiveTotal += item.positiveWordCount;
-    acc[item.sentiment].negativeTotal += item.negativeWordCount;
-    acc[item.sentiment].count += 1;
-    return acc;
-  }, {} as Record<string, { positiveTotal: number; negativeTotal: number; count: number }>);
+export const calculateAverageWordCounts = (data: InferSelectModel<typeof analysisResultNew>[]) => {
+  const sentimentGroups = data.reduce(
+    (acc, item) => {
+      if (!acc[item.sentiment]) {
+        acc[item.sentiment] = { positiveTotal: 0, negativeTotal: 0, count: 0 };
+      }
+      acc[item.sentiment].positiveTotal += item.positiveWordCount;
+      acc[item.sentiment].negativeTotal += item.negativeWordCount;
+      acc[item.sentiment].count += 1;
+      return acc;
+    },
+    {} as Record<string, { positiveTotal: number; negativeTotal: number; count: number }>
+  );
 
   const chartData = Object.keys(sentimentGroups).map((sentiment) => {
     const { positiveTotal, negativeTotal, count } = sentimentGroups[sentiment];
@@ -77,12 +79,12 @@ export const calculateAverageWordCounts = (data: InferSelectModel<typeof analysi
 };
 
 const sentimentScores: Record<string, number> = {
-  "POSITIVE": 10,
-  "NEUTRAL": 5,
-  "NEGATIVE": -5
+  POSITIVE: 10,
+  NEUTRAL: 5,
+  NEGATIVE: -5,
 };
 
-export const calculateOverallSentimentalScore = (data: InferSelectModel<typeof analysisResult>[]) => {
+export const calculateOverallSentimentalScore = (data: InferSelectModel<typeof analysisResultNew>[]) => {
   const totalScore = data.reduce((acc, item) => {
     return acc + sentimentScores[item.sentiment];
   }, 0);

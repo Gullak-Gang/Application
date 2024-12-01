@@ -10,7 +10,6 @@ export async function POST(request: Request) {
 
   const data = await getAnalysis();
 
-
   const systemMessage = `${data}
   You are a helpful assistant. You are allowed to use knowledge from your knowledge base to answer questions.
     Use the addResource tool to add a resource to your knowledge base.

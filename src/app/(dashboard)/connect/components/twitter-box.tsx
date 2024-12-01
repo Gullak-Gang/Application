@@ -13,7 +13,6 @@ import { useFormStatus } from "react-dom";
 const TwitterConnectBox = ({ twitterUser }: { twitterUser: any }) => {
   return (
     <MagicCard className="flex justify-center items-center w-full aspect-video">
-
       {twitterUser ? (
         <section className="flex flex-col justify-center items-center gap-4">
           <AnimatedShinyText className="text-center text-2xl font-semibold">Connect Account</AnimatedShinyText>
@@ -22,16 +21,13 @@ const TwitterConnectBox = ({ twitterUser }: { twitterUser: any }) => {
           <form action={revokeToken}>
             <TwitterButton text="Disconnect" />
           </form>
-
         </section>
       ) : (
         <form action={getAuthUrl}>
           <TwitterButton text="Connect Account" />
         </form>
-
-      )
-      }
-    </MagicCard >
+      )}
+    </MagicCard>
   );
 };
 
@@ -54,7 +50,7 @@ const TwitterProfileCard = ({ profile }: { profile: any }) => {
     <MagicCard>
       <CardHeader className="flex items-center justify-center gap-4">
         <Avatar>
-          <AvatarImage className="w-16 h-16 rounded-full" src={profile_image_url ?? ''} alt={name} />
+          <AvatarImage className="w-16 h-16 rounded-full" src={profile_image_url ?? ""} alt={name} />
           <AvatarFallback>{name?.slice(0, 2)}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col justify-center items-center">

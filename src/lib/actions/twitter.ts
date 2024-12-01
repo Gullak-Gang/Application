@@ -20,7 +20,7 @@ export const revokeToken = async () => {
     throw error;
   }
   return;
-}
+};
 
 export const getCurrentUser = async () => {
   noStore();
@@ -28,9 +28,7 @@ export const getCurrentUser = async () => {
     const client = getTwitterClient();
     const user = await client.users.findMyUser();
     return user?.data;
-
   } catch (error) {
-    console.error("Error getting current user:", error);
     return null;
   }
 };
