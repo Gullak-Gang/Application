@@ -1,4 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getCurrentInsaUser } from "@/lib/actions/instagram";
 import { getCurrentUser } from "@/lib/actions/twitter";
 import CustomConnectBox from "./components/custom-box";
 import InstaConnectBox from "./components/insta-box";
@@ -6,6 +7,7 @@ import TwitterConnectBox from "./components/twitter-box";
 
 const ConnectPage = async () => {
   const twitterUser = await getCurrentUser();
+  const instaUser = await getCurrentInsaUser();
 
   return (
     <section className="h-screen">
@@ -25,7 +27,7 @@ const ConnectPage = async () => {
           <TwitterConnectBox twitterUser={twitterUser} />
         </TabsContent>
         <TabsContent value="instagram">
-          <InstaConnectBox />
+          <InstaConnectBox instagramUser={instaUser} />
         </TabsContent>
         <TabsContent value="custom">
           <CustomConnectBox />

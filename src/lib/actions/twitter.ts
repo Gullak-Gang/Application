@@ -1,8 +1,8 @@
 "use server";
 
-import { authClient } from "@/lib/twitter-sdk";
+import { authClient, getTwitterClient } from "@/lib/twitter-sdk";
 import { addHashTagToDB, disconnectDB, getTokensFromDB } from "@/services/db/twitter";
-import { unstable_noStore as noStore } from "next/cache";
+import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export const getAuthUrl = async () => {
@@ -15,6 +15,7 @@ export const revokeToken = async () => {
   noStore();
   try {
     await disconnectDB();
+    revalidatePath("/");
   } catch (error) {
     console.error("Error revoking token:", error);
     throw error;
@@ -28,6 +29,7 @@ export const addFormDataToDB = async (formData: FormData) => {
     const { hashtag, posts } = Object.fromEntries(formData);
     if (!hashtag) return;
     await addHashTagToDB(hashtag?.toString(), posts?.toString());
+    revalidatePath("/");
   } catch (error) {
     console.error("Error adding hash tag to db:", error);
     throw error;
@@ -41,11 +43,10 @@ export const getCurrentUser = async () => {
     if (!token) {
       return null;
     }
-    throw new Error("Not implemented");
-    // const user = await getTwitterClient(token).users.findMyUser({
-    //   "user.fields": ["id", "name", "username", "profile_image_url", "public_metrics", "verified"],
-    // });
-    // return user?.data;
+    const user = await getTwitterClient(token).users.findMyUser({
+      "user.fields": ["id", "name", "username", "profile_image_url", "public_metrics", "verified"],
+    });
+    return user?.data;
   } catch (error) {
     console.error("Error getting current user:", error);
     return {

@@ -61,7 +61,8 @@ export const addHashTagToDB = async (hashTag: string, posts: string) => {
   const { userId } = await auth();
   if (!userId) return;
 
-  await db.update(twitterUserConnections)
+  await db
+    .update(twitterUserConnections)
     .set({ hashtag: hashTag, numberOfPosts: posts })
     .where(eq(twitterUserConnections.userId, userId));
 };

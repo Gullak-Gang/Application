@@ -9,7 +9,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { type Twitter_User, addFormDataToDB, getAuthUrl, revokeToken } from "@/lib/actions/twitter";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { ThumbsUp, TwitterIcon, UserCheck, UserPlus } from "lucide-react";
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 import { useFormStatus } from "react-dom";
 
 const TwitterConnectBox = ({ twitterUser }: { twitterUser: Twitter_User }) => {
@@ -37,7 +37,11 @@ export default TwitterConnectBox;
 
 const TwitterButton = ({ text, ...props }: { text?: string } & Partial<ComponentProps<typeof ShinyButton>>) => {
   const { pending } = useFormStatus();
-  return <ShinyButton type="submit" {...props}>{pending ? <Spinner /> : text}</ShinyButton>;
+  return (
+    <ShinyButton type="submit" {...props}>
+      {pending ? <Spinner /> : text}
+    </ShinyButton>
+  );
 };
 
 const TwitterProfileCard = ({ profile }: { profile: Twitter_User }) => {
@@ -91,7 +95,14 @@ const TwitterHashInput = () => {
       <CardContent>
         <form action={addFormDataToDB} className="space-y-4 max-w-md">
           <AnimatedShinyText className="font-semibold text-lg text-center">Hashtag</AnimatedShinyText>
-          <Input type="text" id="hashtag" name="hashtag" placeholder="Hashtag (e.g., #BlackFridaySale)" className="w-full" prefix="#" />
+          <Input
+            type="text"
+            id="hashtag"
+            name="hashtag"
+            placeholder="Hashtag (e.g., #BlackFridaySale)"
+            className="w-full"
+            prefix="#"
+          />
 
           <AnimatedShinyText className="font-semibold text-lg text-center">No of Posts</AnimatedShinyText>
           <Input type="text" id="posts" name="posts" placeholder="No of Posts" className="w-full" />

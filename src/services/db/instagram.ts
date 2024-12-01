@@ -4,27 +4,31 @@ import { unstable_noStore as noStore } from "next/cache";
 import { db } from "../../lib/db";
 import { instagramUserConnections } from "../../lib/db/schema/schema";
 
-export const saveToDB = async (formData: FormData) => {
+export const saveToDB = async (apifyToken: string, hashtag: string, posts: string) => {
   noStore();
   const { userId } = await auth();
   if (!userId) return;
-  const apifyToken = formData.get("apifyToken");
-  if (!apifyToken) return;
-
-  await db
-    .insert(instagramUserConnections)
-    .values({
-      userId: userId,
-      apifyToken: apifyToken.toString(),
-      disconnectedAt: null,
-    })
-    .onConflictDoUpdate({
-      target: instagramUserConnections.userId,
-      set: {
+  console.log({ apifyToken, hashtag, posts });
+  const data =
+    await db
+      .insert(instagramUserConnections)
+      .values({
+        userId: userId,
         apifyToken: apifyToken.toString(),
+        hashtag: hashtag.toString(),
+        numberOfPosts: posts.toString(),
         disconnectedAt: null,
-      },
-    });
+      })
+      .onConflictDoUpdate({
+        target: instagramUserConnections.userId,
+        set: {
+          apifyToken: apifyToken.toString(),
+          hashtag: hashtag.toString(),
+          numberOfPosts: posts.toString(),
+          disconnectedAt: null,
+        },
+      }).returning();
+  console.log(data)
 };
 
 export const removeFromDB = async () => {
@@ -37,10 +41,10 @@ export const removeFromDB = async () => {
     .where(eq(instagramUserConnections.userId, userId));
 };
 
-export const getConnections = async () => {
+export const getTokensFromDB = async () => {
   noStore();
   const { userId } = await auth();
   if (!userId) return;
   const data = await db.select().from(instagramUserConnections).where(eq(instagramUserConnections.userId, userId));
-  return data;
+  return data?.[0];
 };

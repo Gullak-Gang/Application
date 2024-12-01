@@ -10,12 +10,7 @@ export function InputFile({ onChange, accept }: InputFileProps) {
   return (
     <div className="grid w-full max-w-sm items-center gap-1.5">
       <Label htmlFor="picture">Select CSV File</Label>
-      <Input 
-        id="picture" 
-        type="file" 
-        onChange={onChange}
-        accept={accept}
-      />
+      <Input id="picture" type="file" onChange={onChange} accept={accept} />
     </div>
   );
 }
