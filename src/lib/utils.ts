@@ -52,3 +52,26 @@ export const calculateWeeklyTrend = (data: InferSelectModel<typeof analysisResul
     trendText,
   };
 };
+
+export const calculateAverageWordCounts = (data: InferSelectModel<typeof analysisResult>[]) => {
+  const sentimentGroups = data.reduce((acc, item) => {
+    if (!acc[item.sentiment]) {
+      acc[item.sentiment] = { positiveTotal: 0, negativeTotal: 0, count: 0 };
+    }
+    acc[item.sentiment].positiveTotal += item.positiveWordCount;
+    acc[item.sentiment].negativeTotal += item.negativeWordCount;
+    acc[item.sentiment].count += 1;
+    return acc;
+  }, {} as Record<string, { positiveTotal: number; negativeTotal: number; count: number }>);
+
+  const chartData = Object.keys(sentimentGroups).map((sentiment) => {
+    const { positiveTotal, negativeTotal, count } = sentimentGroups[sentiment];
+    return {
+      sentiment,
+      averagePositiveWordCount: (positiveTotal / count).toFixed(2),
+      averageNegativeWordCount: (negativeTotal / count).toFixed(2),
+    };
+  });
+
+  return chartData;
+};

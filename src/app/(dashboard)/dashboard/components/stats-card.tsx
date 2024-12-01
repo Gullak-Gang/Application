@@ -4,17 +4,10 @@ import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from 
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { MagicCard } from "@/components/ui/magic-card";
 import type { analysisResult } from "@/lib/db/schema/schema";
+import { calculateAverageWordCounts, getDateRange } from "@/lib/utils";
 import type { InferSelectModel } from "drizzle-orm";
 import { useMemo } from "react";
-import { Label, Pie, PieChart } from "recharts";
-
-// const chartData = [
-//   { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-//   { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-//   { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-//   { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-//   { browser: "other", visitors: 190, fill: "var(--color-other)" },
-// ];
+import { Bar, BarChart, CartesianGrid, Label, Pie, PieChart, XAxis } from "recharts";
 
 const pieConfig = {
   posts: {
@@ -56,7 +49,6 @@ export function PieChartCard({ data }: { data: InferSelectModel<typeof analysisR
     <MagicCard className="flex flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle className="text-center">Feed Sentiment Distribution</CardTitle>
-        <CardDescription>Analysis from your data</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer config={pieConfig} className="mx-auto aspect-square max-h-[250px]">
@@ -88,4 +80,74 @@ export function PieChartCard({ data }: { data: InferSelectModel<typeof analysisR
       </CardFooter>
     </MagicCard>
   );
+}
+
+
+const chartData = [
+  { month: "January", desktop: 186 },
+  { month: "February", desktop: 305 },
+  { month: "March", desktop: 237 },
+  { month: "April", desktop: 73 },
+  { month: "May", desktop: 209 },
+  { month: "June", desktop: 214 },
+]
+
+const barConfig = {
+  positive: {
+    label: "Positive Word Count",
+    color: "hsl(var(--chart-1))",
+  },
+  negative: {
+    label: "Negative Word Count",
+    color: "hsl(var(--chart-3))",
+  },
+} satisfies ChartConfig
+
+export const BarChartCard = ({ data }: { data: InferSelectModel<typeof analysisResult>[] }) => {
+  const { endDate, startDate, chartData } = useMemo(() => {
+    const rawData = calculateAverageWordCounts(data);
+    const { endDate, startDate } = getDateRange(data);
+
+    const chartData = rawData?.map((item) => ({
+      sentiment: item.sentiment,
+      positive: item.averagePositiveWordCount,
+      negative: item.averageNegativeWordCount,
+    }));
+
+
+    return { endDate, startDate, chartData };
+  }, [data]);
+
+  return (
+    <MagicCard className="flex flex-col">
+      <CardHeader>
+        <CardTitle>Word Count Analysis</CardTitle>
+        <CardDescription>
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="mt-4">
+        <ChartContainer config={barConfig}>
+          <BarChart accessibilityLayer data={chartData}>
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="sentiment"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tickFormatter={(value) => value.slice(0, 3)}
+            />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent indicator="dashed" />}
+            />
+            <Bar dataKey="positive" fill="var(--color-positive)" radius={4} />
+            <Bar dataKey="negative" fill="var(--color-negative)" radius={4} />
+          </BarChart>
+        </ChartContainer>
+      </CardContent>
+      <CardFooter className="mt-auto block">
+        <p className="text-sm leading-none">{startDate} to {endDate}</p>
+      </CardFooter>
+    </MagicCard>
+  )
 }

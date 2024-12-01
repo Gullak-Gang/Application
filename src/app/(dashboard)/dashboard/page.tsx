@@ -1,6 +1,6 @@
 import { getAnalysis } from "@/lib/actions/analysis";
 import MainChart from "./components/main-chart";
-import { PieChartCard } from "./components/stats-card";
+import { BarChartCard, PieChartCard } from "./components/stats-card";
 export const dynamic = "force-dynamic";
 
 export default async function Dashboard() {
@@ -10,6 +10,7 @@ export default async function Dashboard() {
     <div className="flex flex-1 flex-col gap-4">
       <div className="grid auto-rows-min gap-4 md:grid-cols-3">
         <PieChartCard data={data} />
+        <BarChartCard data={data} />
       </div>
       <MainChart data={data} />
     </div>
