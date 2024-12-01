@@ -34,7 +34,7 @@ export default function Home() {
       {/* Navbar */}
       <LandingNavigation />
       {/* Section 1 */}
-      <section className="flex flex-col justify-center items-center h-screen space-y-4">
+      <section className="flex flex-col justify-center items-center h-[90vh] space-y-4">
         <SparklesText
           text="All your Insights in one Place"
           className="w-2/4 text-balance text-center text-4xl font-bold capitalize md:text-7xl leading-relaxed"
@@ -50,7 +50,7 @@ export default function Home() {
       </section>
 
       {/* Section 2 */}
-      <section className="flex flex-col justify-center items-center h-screen space-y-4">
+      <section className="flex flex-col justify-center items-center space-y-4 mb-40">
         <h2 className="font-semibold text-4xl text-card-foreground">Collect all your feedback in one place</h2>
         <p className="font-light text-lg text-card-foreground w-2/3 text-center text-balance">
           Gullak acts as a central hub for your work, seamlessly communicating between your socials and giving
@@ -96,8 +96,7 @@ export default function Home() {
       </section>
 
       {/* Section 3 */}
-
-      <section className="flex flex-col justify-center items-center h-screen space-y-4">
+      <section className="flex flex-col justify-center items-center space-y-4 mb-40">
         <h2 className="font-semibold text-4xl text-card-foreground">Complete feedback Anaylsis</h2>
         <p className="font-light text-lg text-card-foreground w-2/3 text-center text-balance">
           Get complete overview of the application, seamlessly communicating between your socials and giving actionable
@@ -113,7 +112,7 @@ export default function Home() {
       </section>
 
       {/* Section 4 */}
-      <section className="flex flex-col justify-center items-center h-screen space-y-6 mt-4">
+      <section className="flex flex-col justify-center items-center space-y-6 mt-4 mb-40">
         <h2 className="font-semibold text-4xl text-card-foreground">Remagine Analysis Together</h2>
         <RainbowButton className="dark:text-secondary-foreground text-primary-foreground">
           <Link href="/dashboard">Get Started</Link>
