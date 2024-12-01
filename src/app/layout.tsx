@@ -5,9 +5,38 @@ import type { Metadata } from "next";
 import { Toaster } from "sonner";
 import "./globals.css";
 
+const description = "AI-Powered Customer Feedback Analysis Pipeline | Kestra | #HackFrost 2024";
+const images = '/images/cover.png';
+const title = "Gullak AI - AI-Powered Customer Feedback Analysis Pipeline";
+const appUrl = new URL(process.env.NEXT_PUBLIC_BASE_URL ?? "");
+
 export const metadata: Metadata = {
-  title: "Gullak App",
-  description: "Gullak App",
+  title,
+  description,
+  metadataBase: appUrl,
+  keywords: [
+  ],
+  openGraph: {
+    type: 'website',
+    countryName: 'India',
+    title,
+    description,
+    images
+  },
+  twitter: {
+    card: 'summary_large_image',
+    creator: '@Drish-xD',
+    site: appUrl.toString(),
+    title,
+    description,
+    images
+  },
+  category: 'Productivity',
+  creator: 'Gullak Gang',
+  authors: { name: 'Drish', url: appUrl },
+  robots: { index: true, follow: true },
+  referrer: 'origin-when-cross-origin',
+  generator: 'Next.js'
 };
 
 export const dynamic = "force-dynamic";
