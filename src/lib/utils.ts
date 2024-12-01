@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { format, getISOWeek, getYear, isValid, max, min, parseISO } from "date-fns";
 import type { InferSelectModel } from "drizzle-orm";
 import { twMerge } from "tailwind-merge";
+import type { analysisResultNew } from "./db/schema/schema";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
