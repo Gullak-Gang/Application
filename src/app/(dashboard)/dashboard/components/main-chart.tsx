@@ -1,22 +1,11 @@
-'use client';
+"use client";
 
-import {
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { MagicCard } from "@/components/ui/magic-card";
-import { analysisResult } from "@/lib/db/schema/schema";
+import type { analysisResult } from "@/lib/db/schema/schema";
 import { calculateWeeklyTrend, getDateRange } from "@/lib/utils";
-import { InferSelectModel } from "drizzle-orm";
+import type { InferSelectModel } from "drizzle-orm";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import { useMemo } from "react";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
@@ -26,7 +15,7 @@ const chartConfig = {
     label: "Analysis",
     color: "hsl(var(--chart-1))",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export const MainChart = ({ data }: { data: InferSelectModel<typeof analysisResult>[] }) => {
   const { endDate, startDate, chartData, trendPercentage, trendText } = useMemo(() => {
@@ -34,13 +23,15 @@ export const MainChart = ({ data }: { data: InferSelectModel<typeof analysisResu
     const chartData = data.map((item, index) => ({ id: (index + 1).toString(), score: item?.score }));
     const { trendPercentage, trendText } = calculateWeeklyTrend(data);
     return { endDate, startDate, chartData, trendPercentage, trendText };
-  }, [data])
+  }, [data]);
 
   return (
     <MagicCard className="flex flex-col">
       <CardHeader>
         <CardTitle>Analysis</CardTitle>
-        <CardDescription>{startDate} to {endDate}</CardDescription>
+        <CardDescription>
+          {startDate} to {endDate}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -60,29 +51,19 @@ export const MainChart = ({ data }: { data: InferSelectModel<typeof analysisResu
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Line
-              dataKey="score"
-              type="natural"
-              stroke="var(--color-desktop)"
-              strokeWidth={2}
-              dot={false}
-            />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+            <Line dataKey="score" type="natural" stroke="var(--color-desktop)" strokeWidth={2} dot={false} />
           </LineChart>
         </ChartContainer>
       </CardContent>
-      {trendText ?
+      {trendText ? (
         <CardFooter className="flex gap-2 font-medium leading-none">
-          Trending {trendText} by {trendPercentage}% {trendPercentage > 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
+          Trending {trendText} by {trendPercentage}%{" "}
+          {trendPercentage > 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
         </CardFooter>
-        : null}
+      ) : null}
     </MagicCard>
-
   );
 };
 
 export default MainChart;
-

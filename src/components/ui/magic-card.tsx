@@ -22,7 +22,10 @@ export function MagicCard({
 }: MagicCardProps) {
   const { theme } = useTheme();
 
-  const $gradientColor = useMemo(() => gradientColor ?? theme === "dark" ? "#262626" : "#D9D9D955", [theme, gradientColor])
+  const $gradientColor = useMemo(
+    () => ((gradientColor ?? theme === "dark") ? "#262626" : "#D9D9D955"),
+    [theme, gradientColor]
+  );
 
   const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(-gradientSize);

@@ -3,8 +3,8 @@
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { MagicCard } from "@/components/ui/magic-card";
-import { analysisResult } from "@/lib/db/schema/schema";
-import { InferSelectModel } from "drizzle-orm";
+import type { analysisResult } from "@/lib/db/schema/schema";
+import type { InferSelectModel } from "drizzle-orm";
 import { useMemo } from "react";
 import { Label, Pie, PieChart } from "recharts";
 
@@ -35,17 +35,22 @@ const pieConfig = {
 } satisfies ChartConfig;
 
 export function PieChartCard({ data }: { data: InferSelectModel<typeof analysisResult>[] }) {
-
   const { totalPosts, chartData } = useMemo(() => {
     const totalPosts = (data?.length ?? 0).toLocaleString();
-    const sentimentCounts = data?.reduce((acc, item) => { acc[item?.sentiment]++; return acc; }, { NEUTRAL: 0, POSITIVE: 0, NEGATIVE: 0 });
+    const sentimentCounts = data?.reduce(
+      (acc, item) => {
+        acc[item?.sentiment]++;
+        return acc;
+      },
+      { NEUTRAL: 0, POSITIVE: 0, NEGATIVE: 0 }
+    );
     const chartData = [
       { name: "positive", posts: sentimentCounts?.POSITIVE ?? 0, fill: "hsl(var(--chart-1))" },
       { name: "negative", posts: sentimentCounts?.NEGATIVE ?? 0, fill: "hsl(var(--chart-2))" },
       { name: "nutral", posts: sentimentCounts?.NEUTRAL ?? 0, fill: "hsl(var(--chart-3))" },
-    ]
-    return { totalPosts, chartData }
-  }, [data])
+    ];
+    return { totalPosts, chartData };
+  }, [data]);
 
   return (
     <MagicCard className="flex flex-col">
@@ -56,10 +61,7 @@ export function PieChartCard({ data }: { data: InferSelectModel<typeof analysisR
       <CardContent className="flex-1 pb-0">
         <ChartContainer config={pieConfig} className="mx-auto aspect-square max-h-[250px]">
           <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
             <Pie data={chartData} dataKey="posts" nameKey="name" innerRadius={60} strokeWidth={5}>
               <Label
                 content={({ viewBox }) => {
