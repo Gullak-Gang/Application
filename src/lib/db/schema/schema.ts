@@ -35,8 +35,10 @@ export const analysisResult = pgTable(
 );
 
 export const twitterUserConnections = pgTable("twitter_user_connections", {
-  id: uuid().primaryKey().notNull(),
+  id: uuid().primaryKey().defaultRandom(),
   userId: text("user_id").notNull(),
+  hashtag: text("hashtag"),
+  numberOfPosts: numeric("number_of_posts"),
   accessToken: text("access_token").notNull(),
   refreshToken: text("refresh_token").notNull(),
   expiresAt: text("expires_at").notNull(),
@@ -46,21 +48,34 @@ export const twitterUserConnections = pgTable("twitter_user_connections", {
 });
 
 export const instagramUserConnections = pgTable("instagram_user_connections", {
-  id: uuid().primaryKey().notNull(),
+  id: uuid().primaryKey().defaultRandom(),
   userId: text("user_id").notNull(),
+  hashtag: text("hashtag"),
+  numberOfPosts: numeric("number_of_posts"),
   apifyToken: text("apify_token").notNull(),
   createdAt: timestamp("created_at", { mode: "string" }).default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedAt: timestamp("updated_at", { mode: "string" }).default(sql`CURRENT_TIMESTAMP`).notNull(),
   disconnectedAt: timestamp("disconnected_at", { mode: "string" }),
 });
 
-export const analysisResultNew = pgTable("analysis_result_new", {
-  id: serial().primaryKey().notNull(),
-  userId: text("user_id").notNull(),
-  sentiment: sentimentEnum().notNull(),
-  score: doublePrecision().notNull(),
-  positiveWordCount: integer("positive_word_count").notNull(),
-  negativeWordCount: integer("negative_word_count").notNull(),
-  platform: platformEnum().notNull(),
-  dateCreated: timestamp("date_created", { mode: "string" }).default(sql`CURRENT_TIMESTAMP`).notNull(),
-});
+export const analysisResultNew = pgTable(
+  "analysis_result_new",
+  {
+    id: serial().primaryKey().notNull(),
+    userId: text("user_id").notNull(),
+    sentiment: sentimentEnum().notNull(),
+    score: doublePrecision().notNull(),
+    positiveWordCount: integer("positive_word_count").notNull(),
+    negativeWordCount: integer("negative_word_count").notNull(),
+    platform: platformEnum().notNull(),
+    dateCreated: timestamp("date_created", { mode: "string" }).default(sql`CURRENT_TIMESTAMP`).notNull(),
+  },
+  (_table) => {
+    return {
+      analysisResultScoreCheck: check(
+        "analysis_result_score_check",
+        sql`(score >= (0)::numeric) AND (score <= (1)::numeric)`
+      ),
+    };
+  }
+);
